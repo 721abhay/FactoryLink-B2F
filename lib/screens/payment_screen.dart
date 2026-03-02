@@ -26,6 +26,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final total = widget.unitPrice * widget.qty;
     final gst = (total * 0.18).round();
     final grand = total + gst;
+    final advance = (grand * 0.30).round(); // TRD C6 Split Payment
+    final remaining = grand - advance;
 
     return Scaffold(
       backgroundColor: C.bg,
@@ -47,9 +49,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 _summaryRow('Delivery', 'FREE', valueColor: C.green),
                 const Divider(height: 20),
                 Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  const Text('Total', style: S.h3),
+                  const Text('Total Value', style: S.h3),
                   Text('₹$grand', style: S.price),
                 ]),
+                const Divider(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(color: C.orange.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    children: [
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        const Text('30% Advance (Pay Now)', style: TextStyle(fontWeight: FontWeight.bold, color: C.orange)),
+                        Text('₹$advance', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: C.orange)),
+                      ]),
+                      const SizedBox(height: 8),
+                      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                        const Text('70% Remaining (Before Delivery)', style: TextStyle(fontSize: 12, color: C.textSec)),
+                        Text('₹$remaining', style: const TextStyle(fontSize: 12, color: C.textSec)),
+                      ]),
+                    ],
+                  ),
+                ),
               ],
             )),
             const SizedBox(height: 8),
@@ -143,7 +163,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 10, offset: const Offset(0, -3))],
         ),
         child: SafeArea(child: AppBtn(
-          text: _processing ? 'Processing...' : 'Pay ₹$grand',
+          text: _processing ? 'Processing...' : 'Pay ₹$advance (30% Advance)',
           onTap: () {
             setState(() => _processing = true);
             Future.delayed(const Duration(seconds: 2), () {

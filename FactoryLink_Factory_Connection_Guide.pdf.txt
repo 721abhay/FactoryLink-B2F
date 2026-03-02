@@ -1,0 +1,1486 @@
+
+FACTORYLINK
+
+Factory Connection & Onboarding Guide
+
+How to Find Factories · How to Approach Them · How to Onboard Them · What Questions to Ask ·
+How to Make Them Want to Join You
+
+
+THIS DOCUMENT COVERS
+
+WHY THIS MATTERS
+
+WHO THIS IS FOR
+
+Every step of finding, approaching,
+convincing, and onboarding factories
+onto your platform. Plus the full
+customer registration flow and how
+both sides connect inside one app.
+
+The factory side is the hardest part
+of building FactoryLink. Without good
+factories there are no good prices.
+Without good prices there are no
+customers. Factories are your
+foundation.
+
+You and your founding team. Every
+person who will ever approach a
+factory or onboard a customer on
+behalf of FactoryLink needs to read
+and know this document completely.
+
+
+
+
+1. THE ONE APP — TWO SIDES
+
+FactoryLink is one single app with two completely separate experiences. When someone opens the app for
+the first time they see one screen with two options only. Everything after that is completely different
+depending on which path they choose.
+
+
+CUSTOMER SIDE
+
+FACTORY SIDE
+
+WHO USES IT
+
+Families, individuals, small businesses
+wanting to buy at factory price
+
+Garment factories, rice mills, flour mills, soap
+manufacturers, any producer
+
+WHAT THEY
+SEE
+
+Products, group order timers, zone progress,
+savings comparison, delivery tracking
+
+Incoming orders, production calendar,
+payment status, quality ratings, capacity
+settings
+
+WHAT THEY DO
+
+Browse, join group orders, pay, track, collect,
+rate quality, subscribe for groceries
+
+Set capacity, confirm orders, update
+production status, receive payments, manage
+profile
+
+HOW THEY
+JOIN
+
+Self registration in 3 minutes. Phone number,
+address, anchor point selection.
+
+Guided onboarding with your team.
+Documents, verification, pricing negotiation,
+then live.
+
+THEIR MAIN
+FEAR
+
+Will I actually save money? Is quality good?
+Will delivery happen on time?
+
+Will orders actually come? Will I get paid on
+time? Will this affect my wholesaler?
+
+
+THE KEY POINT: Both sides use the same app downloaded from the same link. The app detects
+whether they registered as customer or factory and shows them their correct experience every time they
+open it. One app. Two worlds. Both needed equally for the platform to work.
+
+
+
+
+2. WHERE TO FIND FACTORIES — EVERY METHOD
+
+Finding the right factories is not hard if you know where to look. The mistake most people make is searching
+online only. The best factory connections happen physically and personally. Here are all methods:
+
+
+METHOD 1 Physical
+Visit to Industrial Area
+
+Every city in India has one or more industrial areas or MIDC zones. Just go there and
+walk around. You will see small factory signboards everywhere. Note down names,
+products they make, and owner contacts. Best cities for clothing: Tirupur, Surat,
+Ludhiana, Delhi Okhla, Mumbai Dharavi. For groceries: visit your city APMC market —
+this is where rice mills, flour mills, oil factories all operate.
+
+
+METHOD 2 IndiaMART
+
+Go to indiamart.com. Search your product category plus city — example 'cotton t-shirt
+manufacturer Mumbai' or 'rice mill Pune'. You get a list of verified manufacturers with
+phone numbers, email IDs, and addresses. Filter by 'verified supplier' badge for more
+reliable contacts. This is the fastest way to get 20-30 factory contacts in one hour from
+your desk.
+
+
+METHOD 3 Government
+MSME Udyam Portal
+
+Website: udyamregistration.gov.in — free government database of all registered small
+manufacturers. Search by NIC code (industry code) and pin code. Every factory
+registered here has their address, product category, and contact details. These are
+verified legal businesses. Best source for finding factories nobody else is approaching
+yet.
+
+
+METHOD 4 Trade Fairs
+and Exhibitions
+
+CMAI Garment Fair (Mumbai and Delhi) — hundreds of small clothing manufacturers in
+one place. AAHAAR International Food and Hospitality Fair — food and grocery
+manufacturers. India Food Expo — direct food processors and mills. Attending one
+trade fair gives you 50 factory owner contacts, business cards, and face to face
+conversations in one single day.
+
+
+METHOD 5 Trace Back
+from Wholesale Market
+
+Go to your nearest wholesale market. Buy something — any product in a category you
+want on your platform. Ask the wholesaler very simply: 'Which company makes this? I
+want to place a large direct order.' They will tell you or show you the brand. Then search
+that brand on IndiaMART or Google. Within 2-3 conversations you reach the actual
+factory owner directly.
+
+
+METHOD 6 Personal
+Network and Referrals
+
+Ask everyone in your personal network — family, friends, former colleagues, college
+batchmates. Do you know anyone who owns or manages a small factory or knows
+someone who does? One warm introduction from a mutual contact is worth 50 cold
+visits. The first 5-10 factory partners you sign should ideally come from personal
+referrals. They trust you faster and give you better terms because of the personal
+relationship.
+
+
+
+
+METHOD 7 LinkedIn
+and JustDial Business
+
+Search LinkedIn for 'production manager' or 'factory owner' in your city plus product
+category. Connect and send a short direct message explaining your platform. JustDial
+Business section also lists manufacturing units with direct phone numbers. These
+methods are slower but can reach factory owners that IndiaMART does not list.
+
+
+
+
+3. HOW TO GET CONTACT DETAILS — EMAIL, PHONE, ADDRESS
+
+Once you identify a factory you need their direct contact — not a general number but the owner or production
+manager specifically. Here is exactly how to get the right contact:
+
+
+SOURCE
+
+WHAT YOU GET
+
+HOW TO USE IT
+
+RELIABILITY
+
+IndiaMART
+listing
+
+Business phone,
+mobile number, email
+ID, full address
+
+Call the mobile number directly — this
+usually reaches owner or senior manager.
+Do not email first. Always call.
+
+High — listings are
+regularly updated by
+businesses themselves
+
+MSME Udyam
+Portal
+
+Business address, NIC
+code, registration
+number
+
+Use address to visit physically or
+cross-reference with IndiaMART to find
+phone number
+
+High for address. Low
+for direct contact —
+need to visit or call
+general number
+
+Trade fair
+business card
+
+Direct mobile of owner
+or sales manager,
+sometimes WhatsApp
+
+WhatsApp is better than call for first
+contact after a trade fair meeting. They
+remember the face.
+
+Very high — they gave
+you the card themselves
+
+Wholesale
+market tracing
+
+Brand name and
+product details
+
+Search brand on IndiaMART or Google to
+find manufacturer contact from brand
+name
+
+Medium — takes 2-3
+steps but leads to real
+factory
+
+Personal
+referral
+
+Direct introduction via
+phone or WhatsApp
+from mutual contact
+
+Ask the mutual contact to introduce you on
+WhatsApp group message or call. Never
+cold contact after a referral.
+
+Very high — trust
+transferred from the
+mutual contact to you
+immediately
+
+Google Maps
+
+Factory location,
+photos, sometimes
+phone number
+
+Search industrial area name plus product
+type. Call number listed on Maps. Walk in
+if nearby.
+
+Medium — not all
+factories list on Maps but
+industrial clusters are
+visible
+
+
+IMPORTANT: Always try to get the OWNER's direct mobile number — not the factory's landline or
+general number. Decisions about joining a new platform are made by owners not receptionists or
+workers. If you can only reach a general number ask specifically: 'Can I speak with the owner or
+production manager about a bulk order partnership?'
+
+
+
+
+4. HOW TO APPROACH FACTORIES — EXACT SCRIPTS FOR EVERY
+SITUATION
+
+What you say in the first 30 seconds determines whether a factory owner listens or ends the conversation.
+Never start by explaining the app. Always start with what they care about most — guaranteed orders and
+guaranteed payment.
+
+
+SITUATION
+
+EXACT WORDS TO USE
+
+First phone call to a factory
+you found on IndiaMART
+
+"Hello, am I speaking with the owner? My name is [your name]. I am building a
+platform that gives small factories guaranteed bulk orders from customers in your city
+every month. We handle all customer payments in advance before production starts. I
+wanted to understand your current capacity and see if we can work together. Do you
+have 10 minutes to talk?"
+
+
+SITUATION
+
+EXACT WORDS TO USE
+
+Owner asks what kind of
+platform and how it works
+
+"We group together orders from 20-30 customers in your area who want the same
+product. Instead of each customer buying one or two pieces from a retail shop — we
+collect all their orders together and give you one confirmed bulk order with payment
+30% in advance before you start production. You get guaranteed volume. Customers
+get factory price. We take a small platform fee. Nobody in your current distribution
+chain offers you this."
+
+
+SITUATION
+
+EXACT WORDS TO USE
+
+Owner asks how many
+customers you have right
+now
+
+"We are currently onboarding our first 100 customers in [your city]. I already have
+[number] families who have committed and paid advance for their first order. I want
+you to be one of our first factory partners so you get the highest priority in order
+routing as we grow. Early partners always benefit most."
+
+
+SITUATION
+
+EXACT WORDS TO USE
+
+Owner says I already sell
+through my wholesaler I do
+not need this
+
+"I completely understand. I am not asking you to stop working with your wholesaler. I
+am offering you additional orders on top of what you already get — specifically during
+your slow months when your machines would otherwise be sitting idle. Does your
+wholesaler give you guaranteed orders every month or do orders come and go
+unpredictably?"
+
+
+SITUATION
+
+EXACT WORDS TO USE
+
+Owner asks about payment
+— when will he get paid
+
+"You receive 30% advance payment before you start production on any order. The
+remaining 70% is released to your bank account within 48 hours of confirmed
+delivery. We never hold your money beyond 48 hours after delivery confirmation.
+Compare that to your current wholesaler — how many days credit do they make you
+wait right now?"
+
+
+
+
+SITUATION
+
+EXACT WORDS TO USE
+
+Owner is interested and
+asks what happens next
+
+"I would like to visit your factory this week to see your production setup and discuss
+pricing together. It takes about 30 minutes. I will also bring our partnership agreement
+so you can see exactly what we are committing to each other. Which day works for
+you — would Tuesday or Thursday be better?"
+
+
+SITUATION
+
+EXACT WORDS TO USE
+
+Owner says let me think
+about it and call you back
+
+"Of course, take your time. Can I just ask — what is the main thing you want to think
+through? I want to make sure I have answered all your questions before we end the
+call. And I will send you a short WhatsApp message with our platform overview so you
+have it in writing."
+
+
+
+
+5. THE FACTORY VISIT — EVERY QUESTION TO ASK
+
+When you visit a factory in person this is your chance to verify everything and build real trust. Come prepared
+with these questions. Take notes. Show the factory owner you are serious and professional.
+
+SECTION A — About Their Production Capacity
+
+
+QUESTION TO ASK
+
+WHY YOU ARE ASKING THIS
+
+WHAT A GOOD ANSWER LOOKS
+LIKE
+
+How many units of [product] can
+you produce in one day?
+
+Sets your maximum order routing
+limit for this factory
+
+A specific number like 200-300 units
+per day. Vague answers like 'as many
+as needed' are a red flag.
+
+What is the minimum order you
+need to start a production run?
+
+This becomes your group order
+minimum target for this factory's
+products
+
+Ideally 25-100 units for small factories.
+Anything above 500 units is too large
+for your early stage.
+
+How many days from order
+confirmation to products ready for
+dispatch?
+
+Sets the delivery timeline you
+promise customers for this factory's
+products
+
+3-7 days is ideal. More than 14 days will
+frustrate customers and hurt your
+ratings.
+
+Which months are your busiest?
+Which months do you have spare
+capacity?
+
+Helps you plan when to push more
+orders to this factory and when to
+find alternatives
+
+Clear seasonal awareness shows an
+experienced factory owner who
+understands their own business.
+
+Do you currently have any orders in
+production right now?
+
+Confirms they are actually
+operational and not just claiming to
+be
+
+They should be able to show you the
+production floor with work in progress.
+
+SECTION B — About Their Products and Quality
+
+
+QUESTION TO ASK
+
+WHY YOU ARE ASKING THIS
+
+WHAT A GOOD ANSWER LOOKS
+LIKE
+
+Can you show me samples of your
+standard products?
+
+You need to physically check
+quality before listing any product on
+your platform
+
+They should have samples ready or be
+able to produce one quickly. No
+samples is a serious warning sign.
+
+What quality checks do you do
+before dispatching an order?
+
+Tells you how serious they are
+about quality control — this is now
+your problem too
+
+A specific process like checking every
+10th unit or final inspection before
+packaging. No process is a red flag.
+
+Do you have GST registration and
+MSME Udyam certificate?
+
+Legal requirement before they can
+appear on your platform
+
+They should have these documents
+ready or be able to email them within 24
+hours.
+
+
+
+
+Can you do custom packaging or
+labelling with our app's branding?
+
+For future private label products
+and professional delivery
+presentation
+
+Most small factories can do this for a
+small additional charge per unit.
+
+What happens if you receive a
+defective raw material batch and
+cannot maintain quality on an
+order?
+
+Tests their crisis management
+thinking and honesty
+
+A good factory owner says they would
+notify you immediately and either delay
+or source alternative material.
+
+SECTION C — About Their Pricing
+
+
+QUESTION TO ASK
+
+WHY YOU ARE ASKING THIS
+
+WHAT A GOOD ANSWER LOOKS
+LIKE
+
+What is your price per unit for an
+order of 25 units? 50 units? 100
+units? 200 units?
+
+Gets their pricing tiers so you can
+set customer prices with your
+margin included
+
+Clear price breaks at each quantity
+level. A factory that cannot give tiered
+pricing is not bulk-order ready.
+
+What is your current price to your
+wholesaler for 100 units?
+
+Baseline to understand how much
+discount you can expect for
+guaranteed orders
+
+They may not tell you directly. If they do
+— your target is to match or beat this
+price for customers.
+
+If I guarantee you 200 units every
+month for 3 months what price can
+you offer?
+
+This is the real negotiation
+question. Tests if they understand
+the value of guaranteed volume.
+
+Any factory that offers the same price
+for guaranteed 3-month volume as for a
+one-time order is not the right partner.
+
+How do you currently get paid by
+your wholesaler? How many days
+credit do they take?
+
+Reveals their cash flow pain point.
+If wholesaler pays in 30-60 days
+your 48 hour payment looks
+amazing to them.
+
+Most small factories will say 30-45 days
+credit from wholesaler. This is your
+strongest negotiating advantage.
+
+
+
+
+6. HOW TO MAKE FACTORIES INTERESTED — YOUR VALUE PITCH
+
+A factory owner has three core problems. If your pitch solves all three clearly — they will want to join. If your
+pitch talks about app features and technology — they will not care. Always pitch to their pain.
+
+
+FACTORY OWNER'S
+REAL PAIN
+
+WHAT THEY CURRENTLY
+EXPERIENCE
+
+HOW YOU SOLVE IT — EXACT PITCH
+
+Uncertain orders —
+machines sit idle some
+months
+
+Wholesaler gives big orders in
+season and nothing in off-season.
+Factory staff paid monthly but
+machines idle. Fixed costs continue
+even when production stops.
+
+We give you a minimum guaranteed order every
+month including your slow months. We know 3
+months in advance what customers need because
+of our subscription model. Your machines never sit
+idle when you work with us.
+
+Slow payment —
+wholesaler takes 30-60
+days credit
+
+Factory produces goods, delivers
+to wholesaler, then waits 30, 45,
+sometimes 60 days for payment.
+Meanwhile factory has to pay
+workers weekly and buy raw
+materials for next order.
+
+We pay 30% before you start production and 70%
+within 48 hours of delivery confirmation. No
+waiting. No chasing payments. No 30-day credit.
+You produce only after money is confirmed in your
+account.
+
+No direct customer
+feedback — no way to
+improve
+
+Wholesaler never tells factory
+which products customers liked
+and which they complained about.
+Factory produces blindly hoping
+wholesaler orders the same thing
+next time.
+
+Every customer on our platform rates your product
+after receiving it. You see real feedback — which
+sizes sell fastest, which quality issues come up,
+what customers want more of. No wholesaler in
+India gives you this data. We do.
+
+Price pressure from
+wholesaler with no
+alternative
+
+Wholesaler knows factory depends
+on them. Uses this to push prices
+down every season. Factory has no
+negotiating power because they
+have no alternative buyers.
+
+Once you are on our platform and get good ratings
+— multiple group orders come to you regularly.
+You are no longer dependent on one wholesaler.
+You have negotiating power back.
+
+
+THE ONE LINE THAT CLOSES MOST FACTORY CONVERSATIONS: 'Your wholesaler makes you wait
+45 days for payment and gives you orders only when he wants. We pay you in 48 hours and give you
+guaranteed orders every month including your slow season. That is the difference between working with
+us and working with your wholesaler.'
+
+
+
+
+7. FACTORY REGISTRATION — STEP BY STEP IN APP
+
+Once a factory owner agrees to join — this is exactly what happens in the app. Every step is designed to be
+simple enough for a factory owner who is comfortable with WhatsApp but not necessarily experienced with
+business software.
+
+
+1
+
+Download App and Select
+Factory Path
+
+Factory owner downloads FactoryLink from Play Store or App Store.
+Opens app. Sees two buttons: I AM A CUSTOMER and I AM A
+FACTORY. Taps I AM A FACTORY. This begins the factory registration
+flow.
+
+
+2
+
+Enter Basic Business
+Details
+
+Factory name. Owner name. Mobile number — verified with OTP.
+WhatsApp number if different. Business email address. Factory address
+with pin code. City and state. This screen should take maximum 3
+minutes to complete.
+
+
+3
+
+Upload Documents
+
+GST Registration Certificate — photo upload from phone camera. MSME
+Udyam Certificate — photo upload. Bank account details — account
+number, IFSC code, bank name. One photo ID of owner — Aadhaar or
+PAN card. Profile photo of factory exterior — builds customer trust when
+shown on product listings.
+
+
+4
+
+Set Product Categories
+and Capacity
+
+Select which product categories they manufacture from a dropdown list.
+For each category: maximum units per day, minimum order quantity,
+standard production lead time in days. Slow season months — which
+months do they have extra capacity and want more orders. This
+information feeds directly into your order routing algorithm.
+
+
+5
+
+Set Pricing Tiers
+
+For each product category set three price tiers. Tier 1: price per unit for
+orders of 25-50 units. Tier 2: price per unit for orders of 51-150 units. Tier
+3: price per unit for orders of 151 units and above. NOTE: Your team
+should have already discussed and agreed these prices during the factory
+visit. This step is just entering the pre-agreed numbers.
+
+
+6
+
+Submit for Verification
+
+Factory profile submitted. Status shows: Under Review. Your team
+receives notification of new factory application. Document review
+completed within 48 hours by your team. If documents are clear — factory
+moves to Tier 1 Verified status automatically. Factory owner receives
+WhatsApp message: Your factory is now live on FactoryLink.
+
+
+
+
+7
+
+First Test Order
+
+Before any large group order routes to new factory — system
+automatically sends one small test order of 20-25 units. Factory fulfills this
+test order. Customer rates quality. If quality score is 3.5 or above —
+factory is fully activated for regular group orders. If below 3.5 — your
+team calls factory to discuss quality issue before more orders are sent.
+
+
+8
+
+Factory Goes Live
+
+Factory profile now visible to your order routing algorithm. When group
+orders form in their area for their product category — orders start arriving.
+Factory sees new order notification on their dashboard. They confirm or
+decline within 2 hours. Production begins. Platform tracks progress.
+Payment released on delivery confirmation.
+
+
+
+
+8. FACTORY DASHBOARD — WHAT FACTORY SEES INSIDE APP
+
+The factory side of the app has four simple screens only. Nothing complicated. Every action is maximum two
+taps. Designed for a factory owner who uses WhatsApp daily but nothing more complex.
+
+
+SCREEN
+
+WHAT IT SHOWS
+
+ACTIONS AVAILABLE
+
+WHY THIS MATTERS
+
+TODAY
+(Home
+Screen)
+
+New orders waiting for
+confirmation right now. Timer
+showing how long until order
+window closes. Pending
+actions that need attention
+today.
+
+Accept order — green
+button. Decline order — red
+button. Message your
+FactoryLink relationship
+manager.
+
+First screen they see every
+morning. Most important decisions
+happen here. Must be clean and
+simple.
+
+PRODUCTI
+ON (In
+Progress)
+
+All confirmed orders currently
+being produced. Units
+confirmed vs units completed
+so far. Expected dispatch date
+for each order.
+
+Update production status —
+Started, Halfway, Ready for
+dispatch. Report a problem
+with this order.
+
+Keeps your team informed of
+production progress without needing
+to call factory every day.
+
+DISPATCH
+(Ready to
+Ship)
+
+Orders fully produced and
+packed. Awaiting courier
+pickup. Courier details and
+expected pickup time.
+
+Confirm courier collected
+the order. Upload photo of
+packed order if required.
+
+Triggers courier dispatch process
+on your side. Critical step for
+delivery tracking.
+
+PAYMENT
+S (Money)
+
+Advance payments received
+per order. Final payments
+pending. Payments released
+this month. Total earnings on
+platform since joining.
+
+View payment breakdown
+per order. Raise payment
+query if any discrepancy.
+
+Most factory owners check this
+screen most frequently.
+Transparency here builds long term
+trust.
+
+
+WHAT FACTORY DOES NOT SEE: Factory cannot see other factories on the platform, their pricing, or
+their order volumes. All factory data is kept completely private. This protects competitive sensitivity and
+maintains trust with all factory partners.
+
+
+
+
+9. CUSTOMER REGISTRATION — COMPLETE FLOW
+
+Customer registration must be so simple that anyone from a college student to a 55 year old housewife can
+complete it in under 3 minutes without any help. Every extra field you add costs you customers who give up
+halfway.
+
+
+1
+
+Download and Open App
+
+Customer downloads app. Opens it. Sees: I AM A CUSTOMER and I AM
+A FACTORY. Taps I AM A CUSTOMER.
+
+
+2
+
+Enter Phone Number
+
+Enter mobile number. Receive OTP. Enter OTP. Phone number verified.
+This is their login forever — no password needed. OTP every time or
+biometric login.
+
+
+3
+
+Enter Basic Details
+
+Full name. Home address with pin code. That is all. No email required at
+this stage. No date of birth. No lengthy forms. Keep it to these three fields
+only.
+
+
+4
+
+Select Anchor Point
+
+App shows a map with nearby anchor points — offices, colleges, markets
+within 3 km. Customer selects their primary anchor point for order
+collection. They can also choose home delivery — slightly higher delivery
+fee applies.
+
+
+5
+
+See Welcome Screen With
+First Offer
+
+Registration complete. App immediately shows: Your first order delivery is
+FREE. Join any group order before [date] and delivery is waived. This
+removes the first order friction and converts registration to first purchase
+fast.
+
+
+6
+
+Optional — Set Up
+Grocery Subscription
+
+After first screen a prompt appears: Want to save on groceries every
+month? Set up your monthly basket in 2 minutes. Customer can skip this
+and do it later. Never force subscription at registration stage.
+
+
+THE RULE FOR CUSTOMER REGISTRATION: Every field you add loses 15-20% of people who started
+registering. Ask only what you absolutely need to deliver their first order. Phone number, name, address,
+anchor point. That is four things. That is enough to start.
+
+
+
+
+10. HOW FACTORY AND CUSTOMER CONNECT — THE FULL FLOW
+
+This is the complete journey showing exactly how a customer order reaches a factory and comes back as a
+delivered product. This happens automatically inside the app once both sides are registered.
+
+
+STEP 1
+
+Customer Browses and
+Joins Group Order
+
+Customer opens app. Sees product listing with factory price, retail
+comparison, timer, zone progress bar. Joins order. Pays 30% advance
+via UPI or wallet.
+
+
+STEP 2
+
+App Groups Nearby Orders
+
+App continuously monitors all orders in same zone for same product.
+When zone hits minimum quantity OR timer expires — whichever
+comes first — order locks automatically.
+
+
+STEP 3
+
+App Routes Order to
+Nearest Verified Factory
+
+Smart matching engine checks which verified factory in that area has
+confirmed capacity for that product today. Checks quality score above
+minimum threshold. Checks production lead time fits delivery window.
+Routes confirmed bulk order to that factory automatically.
+
+
+STEP 4
+
+Factory Receives Order
+Notification
+
+Factory owner gets push notification: New bulk order — 28 t-shirts size
+M, payment Rs.4200 confirmed, dispatch required by [date]. Accept or
+decline within 2 hours. If factory accepts — 30% advance released to
+factory account within 1 hour.
+
+
+STEP 5
+
+Factory Produces and
+Packs
+
+Factory produces the order. Updates status in app: In production, then
+Ready for dispatch. Each customer's order is packed separately with
+their name and order number on the package. Factory does not do
+bulk packing — individual packing is mandatory for correct delivery.
+
+
+STEP 6
+
+Courier Picks Up from
+Factory
+
+Your courier partner receives dispatch notification automatically. Picks
+up all individually packed orders from factory. Scans each package on
+pickup — tracking begins for each customer individually.
+
+
+STEP 7
+
+Delivery to Anchor Point or
+Home
+
+Courier follows optimized route. Delivers to anchor points and colonies
+on the route. Anchor point manager scans arrival. Customers notified:
+Your order has arrived at [anchor point name]. For home delivery:
+delivered directly and customer signs confirmation.
+
+
+STEP 8
+
+Customer Collects and
+Confirms
+
+Customer goes to anchor point. Scans QR code on their order.
+Package released to them. App prompts: Rate your order quality — 1
+to 5 stars. On confirmation — remaining 70% payment released to
+factory within 48 hours automatically.
+
+
+
+
+11. REAL PROBLEMS IN FACTORY-CUSTOMER CONNECTION AND
+SOLUTIONS
+
+n Factory declines order after accepting
+
+
+THE PROBLEM
+
+THE SOLUTION
+
+Factory confirms order then calls to say they cannot fulfill
+due to material shortage or machine breakdown.
+
+Build a mandatory 2 hour confirmation window. Once
+factory taps Accept — a cancellation penalty applies if
+they withdraw within 24 hours of production start. Also
+always have Factory B ready. Order automatically
+reroutes to backup factory within 30 minutes of any
+cancellation. Customer never waits.
+
+n Customer collection rate at anchor point is low
+
+
+THE PROBLEM
+
+THE SOLUTION
+
+Orders arrive at anchor point but 20-30% of customers
+do not collect within 2 days. Anchor point gets
+congested. Factory payment gets delayed.
+
+Automated reminders at 6 hours, 24 hours, and 48 hours
+after arrival notification. After 48 hours uncollected —
+customer is charged a small storage fee per day. After 5
+days uncollected — order returned and full refund minus
+logistics cost. This trains customers to collect promptly
+within 2 deliveries.
+
+n Factory and customer dispute over quality
+
+
+THE PROBLEM
+
+THE SOLUTION
+
+Customer says quality is bad. Factory says customer is
+lying or being unreasonable. You are caught in the
+middle.
+
+Photo evidence mandatory from customer within 24
+hours of collection. Your team reviews photo
+independently within 4 hours. Clear quality standards
+documented for each product category and shared with
+factory at onboarding. Decision made by your team is
+final and binding on both parties. Factory knew this rule
+before joining.
+
+
+
+n Factory wants to deal directly with customer after meeting through your platform
+
+
+THE PROBLEM
+
+THE SOLUTION
+
+After a few orders factory owner gets customer contact
+details and tries to bypass your platform to avoid your
+platform fee.
+
+Customer contact details are never shared with factory
+— ever. Factory sees order number and product details
+only. Never customer name, phone, or address directly.
+Delivery address goes only to courier — not to factory.
+Any factory found attempting direct contact with
+customers is permanently removed from platform.
+
+n New factory has no quality score and customers are hesitant
+
+
+THE PROBLEM
+
+THE SOLUTION
+
+Customer sees a factory with no ratings and prefers to
+wait for a rated factory. New factory never gets first
+orders. Cannot build rating. Catch 22.
+
+New factories start with a platform guaranteed badge
+instead of customer rating badge. Your team has
+physically verified them. Platform puts its own reputation
+behind them. First 5 orders of any new factory are also
+offered at a small additional discount to attract early
+adopters willing to try a new factory. First customers to
+rate a new factory get bonus wallet credit as thank you.
+
+
+
+
+12. FACTORY TRUST SCORE — HOW IT WORKS
+
+Every factory on your platform has a trust score built automatically from their actual performance. This score
+determines how many orders they receive and what badge they display to customers.
+
+
+SCORE COMPONENT
+
+HOW IT IS MEASURED
+
+WEIGHT IN
+SCORE
+
+WHAT AFFECTS IT
+
+Product Quality Rating
+
+Customer rates 1-5 stars after
+every collection. Average
+across all orders.
+
+40% of total
+score
+
+Defective products, wrong items,
+packaging damage all reduce this
+score immediately.
+
+On Time Delivery Rate
+
+Percentage of orders
+dispatched by the confirmed
+dispatch date.
+
+30% of total
+score
+
+Delays beyond promised date reduce
+this. Consistent on-time builds this
+score over 3-4 months.
+
+Order Acceptance
+Rate
+
+Percentage of offered orders
+that factory accepts versus
+declines.
+
+20% of total
+score
+
+Factories that decline too many orders
+get fewer offers. Consistent
+acceptance builds score.
+
+Response Speed
+
+How quickly factory confirms
+or declines an offered order.
+Target is within 2 hours.
+
+10% of total
+score
+
+Slow responses cause delays.
+Factories that respond in under 1 hour
+get bonus score points.
+
+
+TRUST
+TIER
+
+SCORE RANGE
+
+BADGE SHOWN
+
+BENEFITS
+
+RESTRICTIONS
+
+NEW
+FACTORY
+
+No score yet —
+just joined
+
+Platform
+Guaranteed
+
+Listed on platform. Test orders
+only. Platform team backs quality
+claim.
+
+Maximum 30 units per
+order until first 5
+orders completed.
+
+VERIFIED
+
+3.5 to 4.1 out of 5
+
+Verified Factory
+
+Full order routing. All product
+categories active. Standard
+platform fee.
+
+Quality issues trigger
+immediate review call
+from your team.
+
+TOP
+RATED
+
+4.2 and above
+with 10+ orders
+
+Top Rated
+Factory
+
+Priority in order routing algorithm.
+Featured placement in app.
+Eligible for larger subscription
+orders. Lower platform fee as
+reward.
+
+Must maintain score
+above 4.0 to keep Top
+Rated status.
+Reviewed monthly.
+
+SUSPEND
+ED
+
+Below 3.0 or 3
+quality strikes
+
+Not shown to
+customers
+
+None. Factory suspended
+pending quality review meeting
+with your team.
+
+Cannot receive any
+orders. Must complete
+quality improvement
+plan before
+reinstatement.
+
+
+
+
+WHY THIS SYSTEM WORKS: Factories compete to maintain and improve their score because higher
+scores mean more orders. More orders mean more revenue. The score system turns quality
+improvement into a financial incentive rather than just a contractual obligation. Factories WANT to score
+higher — you do not have to force them.
+
+
+
+
+13. READY TO USE OUTREACH TEMPLATES
+
+Copy these exactly or adapt slightly for your situation. These messages are designed to get responses — not
+to explain your entire business in one message.
+
+WHATSAPP MESSAGE — First contact after finding on IndiaMART
+
+
+Hello [Owner Name], I got your contact from IndiaMART. My name is [Your Name] and I am building a
+platform called FactoryLink that gives small manufacturers in [City] guaranteed monthly bulk orders with
+payment in 48 hours — no 30-60 day credit like wholesalers. I would like to discuss if we can work
+together. Are you available for a 10 minute call this week?
+
+WHATSAPP MESSAGE — Follow up after no response in 3 days
+
+
+Hello [Owner Name], following up on my message from [day]. I understand you are busy with production.
+I just wanted to share one thing quickly — we currently have [number] customers in [area near their
+factory] who are looking for a local [product type] manufacturer for a recurring monthly order. If timing
+works, I would love to explore if we are a good fit. No pressure at all.
+
+EMAIL SUBJECT LINE AND BODY — For factories with email listed on IndiaMART
+
+
+SUBJECT: Guaranteed monthly bulk orders for your factory — FactoryLink Partnership Dear [Owner
+Name], I am reaching out because I found your factory on IndiaMART and believe we can work together
+well. I am building FactoryLink — a platform that groups together orders from 20-50 customers in your
+city and places confirmed bulk orders directly with local manufacturers like yourself. What we offer you:
+— Guaranteed minimum orders every month including your slow season — 30% payment before
+production starts, 70% within 48 hours of delivery — No middlemen — your factory name and product
+shown directly to customers — Real customer feedback on your products I would like to visit your factory
+for 30 minutes this week to discuss this further. Please reply to this email or WhatsApp me at [Your
+Number] to schedule a time. Best regards, [Your Name] FactoryLink
+
+IN-PERSON INTRODUCTION — When visiting industrial area cold
+
+
+Hello, I am [Your Name] from FactoryLink. We are building a platform that connects local factories directly
+to customers in this city — cutting out wholesalers completely so factories get better margins and
+customers get lower prices. I am meeting factory owners in this area today. Is the owner available for 10
+minutes? I just have three quick questions about your production capacity.
+
+
+
+
+14. SUMMARY — THE COMPLETE CONNECTION PROCESS AT A GLANCE
+
+
+STAGE
+
+WHAT YOU DO
+
+WHAT FACTORY DOES
+
+WHAT CUSTOMER DOES
+
+FIND
+
+Search IndiaMART, MSME
+portal, visit industrial areas,
+attend trade fairs, ask for
+referrals
+
+Nothing yet. They do not know
+you exist.
+
+Nothing yet. You are building
+supply before demand.
+
+APPROA
+CH
+
+Call or WhatsApp factory
+owner. Use the exact scripts
+from Section 4. Focus on
+guaranteed orders and fast
+payment — not app features.
+
+Listens. Asks questions about
+orders, payment, and how it
+works.
+
+Nothing yet.
+
+VISIT
+
+Go to factory physically. Ask
+all questions from Section 5.
+Verify capacity and
+documents. Negotiate pricing
+tiers.
+
+Shows you factory. Answers
+questions. Discusses pricing.
+Agrees or asks for time to
+think.
+
+Nothing yet.
+
+ONBOAR
+D FACTO
+RY
+
+Guide factory owner through
+app registration. Verify
+documents in 48 hours. Set
+pricing tiers agreed during
+visit.
+
+Downloads app. Registers.
+Uploads documents. Sets
+capacity and pricing.
+
+Nothing yet — but you now have
+supply ready.
+
+ONBOAR
+D CUSTO
+MERS
+
+Now start acquiring
+customers. Show them the
+factory is verified and ready.
+Give first order free delivery to
+convert registration to
+purchase.
+
+Waits for first orders. Checks
+dashboard daily.
+
+Downloads app. Registers in 3
+minutes. Browses products. Joins
+first group order.
+
+FIRST
+ORDER
+
+Route group order to factory
+once zone minimum hit.
+Monitor entire process.
+
+Receives order notification.
+Accepts. Produces.
+Dispatches. Gets paid in 48
+hours.
+
+Pays 30% advance. Gets
+notification when order arrives at
+anchor point. Collects. Rates
+quality.
+
+GROW
+
+Use factory quality scores and
+customer ratings to improve
+routing. Add more factories
+and more customers city by
+city.
+
+Sees regular orders coming.
+Improves quality to maintain
+score. Starts depending less
+on wholesaler.
+
+Reorders regularly. Joins grocery
+subscription. Refers friends to fill
+their zone.
+
+FactoryLink — Factory Connection and Onboarding Guide
+
+
+
+This document covers every step of finding, approaching, convincing, onboarding and connecting factories and
+customers on the FactoryLink platform.
+

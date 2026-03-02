@@ -9,8 +9,8 @@ class DispatchScreen extends StatefulWidget {
 
 class _DispatchScreenState extends State<DispatchScreen> {
   final _readyToDispatch = [
-    {'id': 'FL-0340', 'product': 'Natural Soap Pack', 'qty': 25, 'zone': 'Zone A', 'anchor': 'College Gate - BITS', 'dispatched': false},
-    {'id': 'FL-0339', 'product': 'Handloom Bedsheet', 'qty': 15, 'zone': 'Zone C', 'anchor': 'Central Market Square', 'dispatched': false},
+    {'id': 'FL-0340', 'product': 'Natural Soap Pack', 'qty': 25, 'zone': 'Zone A', 'anchor': 'College Gate - BITS', 'dispatched': false, 'photoUploaded': false},
+    {'id': 'FL-0339', 'product': 'Handloom Bedsheet', 'qty': 15, 'zone': 'Zone C', 'anchor': 'Central Market Square', 'dispatched': false, 'photoUploaded': false},
   ];
 
   final _dispatched = [
@@ -19,6 +19,15 @@ class _DispatchScreenState extends State<DispatchScreen> {
   ];
 
   void _dispatch(int i) {
+    if (_readyToDispatch[i]['photoUploaded'] != true) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text('⚠️ Please upload package photo first.'),
+        backgroundColor: C.red,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ));
+      return;
+    }
     setState(() {
       _readyToDispatch[i]['dispatched'] = true;
     });
@@ -76,6 +85,20 @@ class _DispatchScreenState extends State<DispatchScreen> {
               ]),
               if (!done) ...[
                 const SizedBox(height: 12),
+                Row(children: [
+                  Expanded(
+                    child: AppBtn(
+                      text: (d['photoUploaded'] == true) ? 'Photo Attached' : 'Take Package Photo',
+                      onTap: () {
+                        setState(() { _readyToDispatch[i]['photoUploaded'] = true; });
+                      },
+                      color: (d['photoUploaded'] == true) ? C.green : C.textSec,
+                      outline: d['photoUploaded'] != true,
+                      icon: (d['photoUploaded'] == true) ? Icons.check_circle_rounded : Icons.camera_alt_rounded,
+                    )
+                  ),
+                ]),
+                const SizedBox(height: 10),
                 Row(children: [
                   Expanded(child: AppBtn(text: 'Generate QR & Dispatch', onTap: () => _dispatch(i), color: C.orange, icon: Icons.qr_code_2_rounded)),
                 ]),

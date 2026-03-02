@@ -1,0 +1,2054 @@
+
+FACTORYLINK
+
+Technical Requirements Document
+
+TRD — Version 1.0
+
+Confidential — Engineering Team Only
+
+
+DOCUMENT INFO
+
+DETAILS
+
+Product Name
+
+FactoryLink
+
+Document Type
+
+Technical Requirements Document (TRD)
+
+Version
+
+1.0 — Initial Release
+
+Platform
+
+Mobile — Android + iOS. Backend — Cloud hosted. Admin — Web
+
+Architecture Style
+
+Microservices backend. REST API. Event-driven notifications.
+
+Primary Audience
+
+Engineering team, Tech lead, Backend developers, Mobile developers, DevOps
+
+Document Purpose
+
+Define HOW the system is built — tech stack, APIs, database schema, security,
+infrastructure
+
+PRD Reference
+
+This TRD implements requirements defined in FactoryLink PRD v1.0
+
+
+
+
+1. TECHNOLOGY STACK
+
+Every technology choice is made for three reasons — reliability in Indian internet conditions, developer
+availability in Indian hiring market, and ability to scale from 500 to 500,000 users without rewriting the system.
+
+
+ADMIN DASHBOARD
+
+
+React.js
+
+
+Tailwind CSS
+
+
+Chart.js
+
+
+Google Maps JS API
+
+
+THIRD PARTY SERVICES
+
+
+Razorpay (Payments)
+
+
+Firebase FCM (Push)
+
+
+Gupshup (WhatsApp/SMS)
+
+
+Google Maps API
+
+
+Amazon S3
+
+
+DATABASE LAYER
+
+
+PostgreSQL 15
+
+
+Redis 7
+
+
+Amazon S3
+
+
+BACKEND MICROSERVICES
+
+
+Node.js + Express
+
+
+Python (Algorithms)
+
+
+Bull Queue (Jobs)
+
+
+Socket.io (Real-time)
+
+
+API GATEWAY
+
+
+Kong API Gateway
+
+
+JWT Auth
+
+
+Rate Limiter
+
+
+Request Logger
+
+
+MOBILE CLIENT
+
+
+React Native
+
+
+Redux (State)
+
+
+Axios (API)
+
+
+React Navigation
+
+
+Firebase SDK
+
+
+LAYER
+
+TECHNOLOGY
+
+VERSION
+
+WHY THIS CHOICE
+
+Mobile App
+
+React Native
+
+0.73+
+
+Single codebase for Android and iOS. Large developer
+community in India. Hot reload speeds development.
+
+API Gateway
+
+Kong
+
+3.x
+
+Industry standard. Handles auth, rate limiting, logging out of
+box. Easy to configure without custom code.
+
+Backend
+Services
+
+Node.js +
+Express
+
+Node 20
+LTS
+
+Fast for I/O heavy operations like order matching. Huge npm
+ecosystem. Easy to hire for in India.
+
+Algorithms
+
+Python
+
+3.11+
+
+Group matching, zone clustering, route optimization written in
+Python for clarity and library support.
+
+Primary
+Database
+
+PostgreSQL
+
+15+
+
+ACID compliant. Critical for financial data that must be 100%
+accurate. Excellent JSON support for flexible fields.
+
+Cache
+Database
+
+Redis
+
+7+
+
+In-memory speed for live zone progress bars and pool counts.
+Pub/sub for real-time order updates.
+
+
+
+
+File Storage
+
+Amazon S3
+
+Current
+
+Factory photos, documents, complaint images. Cheap. Reliable.
+Never store files in main database.
+
+Push
+Notifications
+
+Firebase FCM
+
+v9+
+
+Free. Reliable delivery. Works on both Android and iOS with
+single integration.
+
+Payments
+
+Razorpay
+
+Current
+API
+
+India-first payment gateway. Supports UPI, cards, wallets.
+Escrow product available. PCI DSS compliant.
+
+WhatsApp +
+SMS
+
+Gupshup
+
+Current
+
+India's largest messaging API provider. WhatsApp Business API
+access. Cheaper than Twilio for Indian numbers.
+
+
+
+
+2. SYSTEM ARCHITECTURE — REQUEST FLOW
+
+Every request from mobile app to database follows this path. Understanding this flow is essential before
+writing any code.
+
+
+MOBILE
+
+APP
+
+
+API
+
+GATEWAY
+
+
+BACKEND
+
+SERVICE
+
+
+DATABASE
+
+REDIS
+
+
+THIRD
+
+PARTY
+
+
+REQUEST ®
+
+
+¬ RESPONSE
+
+
+Auth + Rate Limit here
+
+
+LAYER
+
+RESPONSIBILITY
+
+WHAT IT MUST NEVER DO
+
+Mobile App
+
+Display UI. Capture user input. Send API
+requests. Show push notifications.
+
+Never contain business logic. Never make direct
+database calls. Never store sensitive user data
+locally.
+
+API Gateway
+
+Authenticate every request. Rate limit by
+user. Route to correct service. Log all
+requests.
+
+Never process business logic. Never talk to
+database directly. Never cache business data.
+
+Backend
+Service
+
+Execute business logic. Validate inputs.
+Call database. Trigger notifications.
+
+Never talk directly to another service's database.
+Always communicate through APIs between
+services.
+
+Database
+
+Store and retrieve data accurately.
+Maintain relationships. Handle
+transactions.
+
+Never contain business logic in stored procedures.
+All logic lives in backend services only.
+
+Third Party
+
+Handle payments, messaging, file storage,
+maps, push notifications.
+
+Never be called directly from mobile app — always
+go through backend. Credentials never exposed to
+client.
+
+
+Microservice Communication Rules
+
+
+SERVICE
+
+COMMUNICATES
+WITH
+
+METHOD
+
+EVENT TRIGGER
+
+Order Service
+
+Matching Service,
+Payment Service,
+Notification Service
+
+HTTP REST
+between services
+
+New order created, order status changed
+
+
+
+
+Matching Service
+
+Order Service, Factory
+Service
+
+HTTP REST + Bull
+Queue for async jobs
+
+Order joins pool, pool locks, timer expires
+
+Factory Service
+
+Order Service,
+Notification Service
+
+HTTP REST
+
+Order routed to factory, factory
+accepts/declines
+
+Payment Service
+
+Order Service, Razorpay
+API
+
+HTTP REST +
+Webhooks from
+Razorpay
+
+Order locked, delivery confirmed, refund
+triggered
+
+Zone Service
+
+Order Service,
+Notification Service
+
+Cron job every hour
++ HTTP REST
+
+Zone health below threshold, zone merges,
+new zone created
+
+Notification
+Service
+
+All services, Firebase,
+Gupshup
+
+Message queue
+(Bull)
+
+Any event requiring customer or factory
+notification
+
+
+
+
+3. DATABASE SCHEMA
+
+Core tables and their relationships. PostgreSQL for all relational data. Redis for all real-time cached data.
+These schemas represent the minimum viable data model for Phase 1.
+
+
+USERS
+
+
+ id (PK)
+
+ phone
+
+ name
+
+ address
+
+ zone_id
+
+ type
+
+
+ORDERS
+
+
+ id (PK)
+
+ user_id (FK)
+
+ product_id (FK)
+
+ pool_id (FK)
+
+ status
+
+ amount
+
+
+FACTORIES
+
+
+ id (PK)
+
+ owner_name
+
+ product_cats
+
+ capacity
+
+ trust_score
+
+ tier
+
+
+ZONES
+
+
+ id (PK)
+
+ lat
+
+ lng
+
+ radius
+
+ health_score
+
+ anchor_ids
+
+
+POOLS
+
+
+ id (PK)
+
+ product_id (FK)
+
+ zone_id (FK)
+
+ factory_id (FK)
+
+ status
+
+ timer_end
+
+
+PAYMENTS
+
+
+ id (PK)
+
+ order_id (FK)
+
+ amount
+
+ stage
+
+ status
+
+ timestamp
+
+
+Core Table Definitions
+
+
+TABLE
+
+PRIMARY
+KEY
+
+KEY FIELDS
+
+INDEXES
+
+users
+
+id (UUID)
+
+phone, name, address, zone_id, type
+(customer/factory), created_at
+
+phone (unique), zone_id,
+type
+
+factories
+
+id (UUID)
+
+owner_id (FK users), capacity_per_day,
+min_order_qty, trust_score, tier, slow_months[]
+
+trust_score, tier, location
+(geo-index)
+
+products
+
+id (UUID)
+
+factory_id (FK), category, name, tier1_price,
+tier2_price, tier3_price, gst_rate
+
+factory_id, category
+
+pools
+
+id (UUID)
+
+product_id (FK), zone_id (FK), factory_id (FK),
+current_qty, min_qty, status, timer_end
+
+zone_id, status, timer_end
+
+orders
+
+id (UUID)
+
+user_id (FK), pool_id (FK), product_id (FK), qty, status,
+advance_paid, final_paid
+
+user_id, pool_id, status
+
+payments
+
+id (UUID)
+
+order_id (FK), amount, type (advance/final/refund),
+gateway_ref, status, timestamp
+
+order_id, status, timestamp
+
+
+
+
+zones
+
+id (UUID)
+
+city, lat, lng, radius_km, health_score,
+anchor_point_ids[], status
+
+city, health_score, status
+(geo-index on lat/lng)
+
+anchor_poi
+nts
+
+id (UUID)
+
+zone_id (FK), name, type (college/office/market), lat,
+lng, manager_phone, active
+
+zone_id, type, active
+
+ratings
+
+id (UUID)
+
+order_id (FK), factory_id (FK), user_id (FK), stars,
+photo_url, created_at
+
+factory_id, stars, created_at
+
+
+Redis Keys — Real-Time Data
+
+
+REDIS KEY PATTERN
+
+DATA STORED
+
+TTL
+
+UPDATED BY
+
+pool:{pool_id}:count
+
+Current order count in pool
+(integer)
+
+48 hours
+
+Order Service on every new
+order
+
+pool:{pool_id}:status
+
+Pool status string:
+open/locked/cancelled
+
+48 hours
+
+Matching Service on pool state
+change
+
+zone:{zone_id}:health
+
+Zone health score (float)
+
+7 days
+
+Zone Service daily cron job
+
+factory:{factory_id}:available
+
+Factory availability flag:
+full/partial/none
+
+7 days
+
+Factory updates weekly.
+Auto-set on capacity changes.
+
+session:{user_id}
+
+JWT token and session
+metadata
+
+24 hours
+
+Auth service on login. Refreshed
+on activity.
+
+rate:{user_id}:{endpoint}
+
+Request count for rate limiting
+(integer)
+
+1 minute
+
+API Gateway on every request
+
+
+
+
+4. API SPECIFICATION — CORE ENDPOINTS
+
+REST API. All endpoints return JSON. All requests require Authorization header with JWT token except /auth
+endpoints. Base URL: https://api.factorylink.in/v1
+
+
+Authentication APIs
+
+
+POST
+
+/auth/otp/send
+
+Send OTP to phone number for login or
+registration
+
+None
+
+200 + message_id
+
+
+POST
+
+/auth/otp/verify
+
+Verify OTP and return JWT token + user
+type
+
+None
+
+200 + jwt_token
+
+
+POST
+
+/auth/refresh
+
+Refresh expired JWT token
+
+Refresh token
+
+200 + new_token
+
+
+POST
+
+/auth/logout
+
+Invalidate session token
+
+JWT
+
+200 + success
+
+
+Customer APIs
+
+
+GET
+
+/products
+
+List products with zone progress and
+timer for customer zone
+
+JWT Customer
+
+200 + product[]
+
+
+GET
+
+/products/{id}
+
+Single product detail with full price
+breakdown and factory info
+
+JWT Customer
+
+200 + product
+
+
+POST
+
+/orders
+
+Place new order — joins existing pool or
+creates new one
+
+JWT Customer
+
+201 + order_id
+
+
+GET
+
+/orders/{id}
+
+Get order status, tracking, and payment
+info
+
+JWT Customer
+
+200 + order
+
+
+GET
+
+/orders
+
+List all customer orders with status
+
+JWT Customer
+
+200 + order[]
+
+
+POST
+
+/orders/{id}/pay-final
+
+Customer pays remaining 70% before
+delivery
+
+JWT Customer
+
+200 + payment_id
+
+
+POST
+
+/orders/{id}/collect
+
+Customer scans QR to confirm
+collection — triggers factory payment
+
+JWT Customer
+
+200 + success
+
+
+POST
+
+/orders/{id}/rate
+
+Submit quality rating 1-5 stars with
+optional photo
+
+JWT Customer
+
+200 + rating_id
+
+
+GET
+
+/zones/nearby
+
+Get nearest anchor points and zone
+health for customer address
+
+JWT Customer
+
+200 + zones[]
+
+
+
+
+POST
+
+/subscriptions
+
+Create grocery subscription with item list
+and duration
+
+JWT Customer
+
+201 + sub_id
+
+
+GET
+
+/subscriptions/{id}
+
+Get subscription details and next
+delivery date
+
+JWT Customer
+
+200 + subscription
+
+
+Factory APIs
+
+
+POST
+
+/factory/register
+
+Factory registration with all business
+details
+
+None
+
+201 + factory_id
+
+
+PUT
+
+/factory/profile
+
+Update factory profile, capacity, pricing
+tiers
+
+JWT Factory
+
+200 + factory
+
+
+PUT
+
+/factory/availability
+
+Update weekly availability:
+full/partial/none
+
+JWT Factory
+
+200 + success
+
+
+GET
+
+/factory/orders/pending
+
+List all orders waiting for factory
+accept/decline
+
+JWT Factory
+
+200 + orders[]
+
+
+PUT
+
+/factory/orders/{id}/accept
+
+Factory accepts order — triggers
+advance payment release
+
+JWT Factory
+
+200 +
+payment_confirmed
+
+
+PUT
+
+/factory/orders/{id}/decline
+
+Factory declines — triggers cascade to
+next factory
+
+JWT Factory
+
+200 + rerouted
+
+
+PUT
+
+/factory/orders/{id}/status
+
+Update production status:
+started/halfway/ready/dispatched
+
+JWT Factory
+
+200 + status
+
+
+GET
+
+/factory/payments
+
+View all payment history and pending
+amounts
+
+JWT Factory
+
+200 + payments[]
+
+
+GET
+
+/factory/trust-score
+
+View trust score breakdown by
+component
+
+JWT Factory
+
+200 + score_detail
+
+
+Admin APIs — Internal Only
+
+
+GET
+
+/admin/factories/pending
+
+List factories awaiting document
+verification
+
+JWT Admin
+
+200 + factories[]
+
+
+PUT
+
+/admin/factories/{id}/verify
+
+Approve or reject factory verification
+
+JWT Admin
+
+200 + factory
+
+
+GET
+
+/admin/zones
+
+Zone health map for all active cities
+
+JWT Admin
+
+200 + zones[]
+
+
+GET
+
+/admin/pools/live
+
+All currently active pools with fill status
+
+JWT Admin
+
+200 + pools[]
+
+
+
+
+POST
+
+/admin/orders/{id}/refund
+
+Force refund for failed or disputed order
+
+JWT Admin
+
+200 + refund_id
+
+
+GET
+
+/admin/analytics
+
+Platform GMV, order count, user growth
+metrics
+
+JWT Admin
+
+200 + metrics
+
+
+
+
+5. SECURITY REQUIREMENTS
+
+Security is non-negotiable at every layer. FactoryLink handles real money, personal identity data, and
+business financial information. Any breach destroys trust permanently.
+
+
+LAYER 4 — DATA ENCRYPTION  |  AES-256 at rest. TLS 1.3 in transit. PCI DSS for payments.
+
+
+LAYER 3 — AUTHORISATION  |  Role-based access. Factory cannot see customer data. JWT tokens.
+
+
+LAYER 2 — AUTHENTICATION  |  OTP verification. Token refresh. Session management.
+
+
+LAYER 1 — NETWORK  |  API Gateway rate limiting. HTTPS only. DDoS protection.
+
+
+SECURITY
+AREA
+
+REQUIREMENT
+
+IMPLEMENTATION
+
+SEVERITY IF VIOLATED
+
+Authentication
+
+All users verified via mobile
+OTP before any access
+granted
+
+Twilio/Gupshup OTP. JWT
+tokens with 24-hour expiry.
+Refresh token flow.
+
+CRITICAL — Unauthorised
+access to orders and
+payments
+
+Authorisation
+
+Factory can never access
+customer personal data.
+Customer cannot see other
+customer orders.
+
+Role-based access control
+(RBAC) enforced at API Gateway
+level for every endpoint.
+
+CRITICAL — Privacy
+breach. Regulatory violation.
+Platform trust destroyed.
+
+Payment
+Security
+
+Zero card data stored on
+FactoryLink servers ever
+
+All card processing through
+Razorpay PCI DSS compliant
+vault. Only payment tokens
+stored.
+
+CRITICAL — Financial fraud.
+RBI regulatory violation.
+Criminal liability.
+
+Data Encryption
+
+All data encrypted at rest
+and in transit
+
+AES-256 for database
+encryption. TLS 1.3 for all API
+communication. S3 server-side
+encryption.
+
+HIGH — Data breach
+exposure. Customer trust
+destroyed.
+
+Factory Data
+Privacy
+
+Factory pricing and order
+volumes never visible to
+other factories
+
+All factory queries filtered by
+factory_id at service layer. No
+cross-factory data leaks.
+
+HIGH — Competitive
+damage. Factory trust
+destroyed. Legal liability.
+
+Input Validation
+
+All API inputs validated and
+sanitised before processing
+
+Joi schema validation on all
+POST/PUT requests. SQL
+injection prevention via
+parameterised queries.
+
+HIGH — Data corruption.
+SQL injection attacks.
+System instability.
+
+
+
+
+Rate Limiting
+
+Maximum 100 requests per
+user per minute on standard
+endpoints
+
+Kong API Gateway rate limiter by
+JWT user ID. Stricter limits on
+payment endpoints.
+
+MEDIUM — DDoS
+vulnerability. System
+overload. Degraded
+performance for all users.
+
+
+
+
+6. THIRD PARTY INTEGRATIONS
+
+FactoryLink does not build what already exists reliably. Every third party integration is chosen for
+India-specific reliability, pricing in INR, and developer documentation quality.
+
+
+FACTORY
+
+LINK
+
+
+Razorpay
+
+
+Payments
+
+UPI/Cards
+
+
+Firebase
+
+
+Push
+
+Notifications
+
+
+Google Maps
+
+
+Zones +
+
+Routing
+
+
+Gupshup
+
+
+WhatsApp
+
++ SMS
+
+
+Amazon S3
+
+
+File
+
+Storage
+
+
+RazorpaynEscrow
+
+
+Payment
+
+Holding
+
+
+SERVICE
+
+PROVIDER
+
+PURPOSE
+
+KEY API CALLS
+
+FAILURE HANDLING
+
+Payments
+
+Razorpay
+
+UPI, card, wallet
+collection. Escrow
+holding. Factory
+payouts.
+
+Create order, verify
+payment, create
+transfer, refund initiation
+
+Retry 3x on timeout. If
+Razorpay down — queue
+payments. Alert ops team
+immediately.
+
+Escrow
+
+Razorpay
+Route
+
+Hold customer advance
+until delivery confirmed.
+Automatic release on
+QR scan.
+
+Create route, transfer
+funds, capture on trigger
+
+All escrow events logged.
+Manual release available to
+ops admin if webhook fails.
+
+Push Notific
+ations
+
+Firebase
+FCM
+
+Order status alerts to
+customer. New order
+alerts to factory.
+
+Send message, send
+multicast, subscribe to
+topic
+
+Store notification in DB.
+Show in-app on next open if
+push failed to deliver.
+
+WhatsApp
++ SMS
+
+Gupshup
+
+OTP delivery. Order
+confirmations. Delivery
+alerts via WhatsApp.
+
+Send OTP, send
+template message, send
+media message
+
+If WhatsApp fails — fallback
+to SMS automatically. If
+SMS fails — email if
+available.
+
+Maps and
+Location
+
+Google Maps
+
+Zone clustering display.
+Anchor point map. Route
+visualisation for drivers.
+
+Geocoding, Distance
+Matrix, Static Maps,
+Places
+
+Cache map tiles. Use last
+known coordinates if API
+times out. Core clustering
+done server-side.
+
+
+
+
+File
+Storage
+
+Amazon S3
+
+Factory photos, product
+images, GST
+certificates, quality
+complaint photos.
+
+PutObject, GetObject,
+GeneratePresignedUrl
+
+Retry upload 3x. If S3
+unavailable — store file
+locally temporarily and sync
+when restored.
+
+
+
+
+7. PERFORMANCE AND SCALABILITY REQUIREMENTS
+
+
+STAGE 1
+
+< 1K users
+
+
+ 1 server
+
+ 1 DB instance
+
+ Shared Redis
+
+ Manual deploy
+
+
+STAGE 2
+
+1K-10K users
+
+
+ 2 app servers
+
+ DB + read replica
+
+ Dedicated Redis
+
+ Basic CI/CD
+
+
+STAGE 3
+
+10K-100K users
+
+
+ Auto-scaling group
+
+ DB cluster
+
+ Redis cluster
+
+ Container (Docker)
+
+
+STAGE 4
+
+100K+ users
+
+
+ Kubernetes
+
+ Multi-region DB
+
+ CDN
+
+ Full DevOps pipeline
+
+
+REQUIREMENT
+
+TARGET
+
+HOW TO ACHIEVE
+
+MONITORING METRIC
+
+API response time —
+standard
+
+Under 300ms p95
+
+Redis caching for frequently read
+data. Database query optimisation.
+Pagination on all list endpoints.
+
+New Relic or Datadog
+APM. Alert if p95 > 500ms.
+
+API response time —
+payment
+
+Under 2 seconds
+p95
+
+Payment calls are synchronous
+with Razorpay. Cannot be cached.
+Optimise network latency to
+Razorpay.
+
+Alert ops team if payment
+API > 3 seconds. Check
+Razorpay status page.
+
+Zone progress bar
+update
+
+Under 500ms after
+new order
+
+Pool count stored in Redis.
+WebSocket or polling every 10
+seconds updates bar. No database
+query for bar.
+
+Redis pub/sub latency
+monitoring. Alert if > 1
+second.
+
+Concurrent users
+supported
+
+10,000 at Phase 1.
+100,000 at Phase
+3.
+
+Horizontal scaling of stateless
+backend services. Load balancer
+distributes traffic.
+
+CPU and memory
+utilisation. Auto-scale
+triggers at 70% CPU.
+
+Database query time
+
+Under 50ms for
+99% of queries
+
+Proper indexes on all frequently
+queried columns. Read replicas for
+analytics. Connection pooling via
+PgBouncer.
+
+Slow query log in
+PostgreSQL. Alert if any
+query > 200ms.
+
+Push notification delivery
+
+Above 95% within
+60 seconds
+
+Firebase FCM with retry logic.
+Fallback to in-app notification if
+push undelivered.
+
+Track notification sent vs
+opened in analytics. Alert if
+delivery rate drops below
+90%.
+
+App size download
+
+Under 30MB initial
+download
+
+Code splitting. Lazy loading of
+heavy screens. Compressed
+assets. No unnecessary libraries.
+
+Monitor Play Store and App
+Store download metrics.
+
+
+
+
+8. ERROR HANDLING STANDARDS
+
+Every error must be handled gracefully. The customer and factory must always receive a clear message. No
+silent failures ever. No raw error messages to the user ever.
+
+
+ERROR CODE
+
+MEANING
+
+USER MESSAGE SHOWN
+
+SYSTEM ACTION
+
+400 Bad
+Request
+
+Invalid input data sent
+by app
+
+Please check your details and
+try again.
+
+Log full error. Return specific field
+validation errors to app for display.
+
+401
+Unauthorised
+
+JWT token expired or
+invalid
+
+Session expired. Please log in
+again.
+
+Clear local token. Redirect to OTP
+login screen. Do not expose token
+details.
+
+403 Forbidden
+
+User trying to access
+data they are not
+allowed to see
+
+You do not have permission
+for this action.
+
+Log attempt with user ID. Alert
+security team if pattern of attempts
+detected.
+
+404 Not Found
+
+Requested resource
+does not exist
+
+This item is no longer
+available.
+
+Log with endpoint and params.
+Check if resource was recently
+deleted.
+
+409 Conflict
+
+Duplicate request —
+order already placed,
+pool already locked
+
+This action has already been
+completed.
+
+Return existing resource ID rather
+than creating duplicate.
+
+422
+Unprocessable
+
+Request understood
+but business rule
+prevents it
+
+Specific reason shown — e.g.
+Pool is full, Factory not
+available
+
+Return specific error code and
+message that maps to user-friendly
+text in app.
+
+429 Too Many
+Requests
+
+Rate limit exceeded
+
+Please wait a moment before
+trying again.
+
+Return Retry-After header. Log user
+ID if excessive rate limit hits
+detected.
+
+500 Server
+Error
+
+Unexpected backend
+failure
+
+Something went wrong on our
+end. We are looking into it.
+
+Log full stack trace. Alert on-call
+engineer. Never expose stack trace
+to client.
+
+503 Service
+Unavailable
+
+Service temporarily
+down for maintenance
+or overload
+
+FactoryLink is temporarily
+unavailable. Please try again
+in a few minutes.
+
+Return estimated recovery time if
+known. Queue critical operations for
+retry.
+
+
+GOLDEN RULE FOR ERRORS: The user message must always tell the customer what to do next. Not
+just what went wrong. 'Something went wrong' is never acceptable without a next step. Every error code
+must map to a tested user-facing message before feature goes to production.
+
+
+
+
+9. TESTING REQUIREMENTS
+
+
+TEST TYPE
+
+WHAT IS TESTED
+
+COVERAGE
+TARGET
+
+TOOLS
+
+Unit Tests
+
+Every service function in
+isolation. Algorithm logic. Data
+transformations.
+
+Minimum 80%
+code coverage
+
+Jest for Node.js. Pytest for Python
+algorithms.
+
+Integration
+Tests
+
+API endpoints end to end.
+Database operations.
+Service-to-service calls.
+
+All critical paths
+covered
+
+Supertest for API. Test database
+instance. Mocked third parties.
+
+Payment Tests
+
+Full payment flow: advance,
+escrow, release, refund in
+Razorpay sandbox.
+
+100% of payment
+states
+
+Razorpay test mode. Automated scripts
+covering all payment scenarios.
+
+Load Tests
+
+System under 10,000 concurrent
+users. Pool lock under spike
+traffic.
+
+Performance
+targets met
+
+k6 or Artillery. Simulate group order
+timer expiry spikes.
+
+Mobile Tests
+
+UI flows on Android 8+ and iOS
+14+. OTP. QR scan. Payment
+screen.
+
+All critical user
+journeys
+
+Detox for React Native E2E. Manual
+testing on physical devices.
+
+Security Tests
+
+SQL injection. Auth bypass
+attempts. Rate limit validation.
+RBAC checks.
+
+All auth
+endpoints tested
+
+OWASP ZAP. Manual penetration test
+before production launch.
+
+Regression
+Tests
+
+Full suite run before every
+production deployment.
+
+All previous tests
+pass
+
+CI/CD pipeline runs tests automatically
+on every pull request.
+
+
+Critical Test Cases — Must Pass Before Launch
+
+
+TES
+T ID
+
+SCENARIO
+
+EXPECTED RESULT
+
+T01
+
+Customer registers with valid phone — OTP sent
+and verified
+
+User created. JWT returned. Customer home screen
+loads.
+
+T02
+
+Customer joins group order — pool at 24 of 25
+minimum
+
+Order created. Pool reaches 25. Pool locks immediately.
+All 25 customers notified.
+
+T03
+
+Timer expires with only 10 of 25 orders in pool
+
+All 10 orders cancelled. Full advance refund to all
+customers within 2 hours. Customers notified.
+
+T04
+
+Factory assigned to order — factory does not
+respond in 2 hours
+
+Order automatically routed to second-ranked factory.
+First factory gets response score penalty.
+
+
+
+
+T05
+
+Customer pays 30% advance via UPI
+
+Payment captured. Amount held in escrow. Factory
+NOT paid. Order status updates to Pooling.
+
+T06
+
+Customer scans QR at anchor point — collection
+confirmed
+
+Order status moves to Collected. 70% payment
+released to factory within 48 hours.
+
+T07
+
+Factory rates below 3.0 after 5 orders
+
+Factory status moves to Suspended. No new orders
+routed. Ops team alerted automatically.
+
+T08
+
+Customer requests refund — factory failed to
+deliver
+
+100% refund from escrow within 2 hours. Factory
+charged for refund cost. Customer notified.
+
+T09
+
+Zone health drops below 0.4 for 2 consecutive
+weeks
+
+Zone merge triggered. 48-hour notice sent to affected
+customers. Pickup point updated in app.
+
+T10
+
+10,000 concurrent users during timer expiry spike
+
+All requests served under 2 seconds. No data
+corruption. No duplicate orders created.
+
+
+
+
+10. DEPLOYMENT AND INFRASTRUCTURE
+
+
+COMPONENT
+
+PHASE 1 SETUP
+
+PHASE 3 SETUP
+
+MANAGED SERVICE
+
+App Servers
+
+2 x EC2 t3.medium on AWS
+
+Auto Scaling Group with 5-20
+instances
+
+AWS EC2 / ECS
+
+Database
+
+1 x RDS PostgreSQL
+db.t3.medium
+
+RDS Multi-AZ + read replica
+
+AWS RDS
+
+Cache
+
+1 x ElastiCache Redis
+cache.t3.micro
+
+ElastiCache Redis cluster with
+3 nodes
+
+AWS ElastiCache
+
+File Storage
+
+S3 bucket with versioning
+
+S3 + CloudFront CDN for image
+delivery
+
+AWS S3 + CloudFront
+
+Load Balancer
+
+AWS Application Load
+Balancer
+
+ALB with WAF (Web
+Application Firewall)
+
+AWS ALB
+
+CI/CD Pipeline
+
+GitHub Actions — test,
+build, deploy
+
+GitHub Actions + Blue/Green
+deployment
+
+GitHub Actions + AWS
+CodeDeploy
+
+Monitoring
+
+CloudWatch basic metrics +
+email alerts
+
+Datadog APM + PagerDuty
+on-call alerts
+
+AWS CloudWatch / Datadog
+
+Secrets
+Management
+
+AWS Secrets Manager for
+API keys
+
+AWS Secrets Manager +
+rotation policy
+
+AWS Secrets Manager
+
+
+Environment Strategy
+
+
+ENVIRONMEN
+T
+
+PURPOSE
+
+DATA
+
+DEPLOYMENT TRIGGER
+
+Development
+(dev)
+
+Individual developer feature
+work
+
+Seeded test data only. No real
+customer data ever.
+
+Automatic on every git push
+to feature branch
+
+Staging
+
+Integration testing. Product
+review before release.
+
+Anonymised production data
+snapshot. Refreshed weekly.
+
+Automatic on merge to main
+branch. All tests must pass.
+
+Production
+
+Live system serving real
+customers and factories
+
+Real customer data. Encrypted.
+Access restricted to senior
+engineers.
+
+Manual approval required
+from tech lead. Deployed
+during low-traffic window.
+
+
+PRODUCTION DEPLOYMENT RULE: No deployment to production on Friday afternoon or weekend. No
+deployment during active group order timer windows. Every production deployment requires one
+engineer on standby for 2 hours after deployment to monitor and rollback if needed.
+
+
+
+FactoryLink — Technical Requirements Document v1.0
+
+This document defines how FactoryLink is built — stack, APIs, schema, security, testing, and infrastructure. All
+engineering decisions must trace back to a requirement in this document.
+

@@ -1,0 +1,1424 @@
+
+FACTORYLINK
+
+Product Requirements Document
+
+PRD — Version 1.0
+
+Confidential — Internal Use Only
+
+
+DOCUMENT INFO
+
+DETAILS
+
+Product Name
+
+FactoryLink
+
+Document Type
+
+Product Requirements Document (PRD)
+
+Version
+
+1.0 — Initial Release
+
+Platform
+
+Mobile App — Android and iOS (Single Codebase)
+
+Target Market
+
+India — Tier 1, 2 and 3 cities
+
+Primary Users
+
+Consumers seeking factory-direct prices + Small local manufacturers
+
+Document Purpose
+
+Define what the product must do, for whom, and why — before any development
+begins
+
+
+
+
+1. PRODUCT OVERVIEW
+
+FactoryLink is a mobile platform that eliminates all middlemen between small local factories and everyday
+consumers. By grouping customer orders together using a timed window and map-based clustering, the
+platform creates bulk orders large enough for factories to offer their lowest prices directly to individuals.
+
+
+PROBLEM BEING SOLVED
+
+SOLUTION FACTORYLINK PROVIDES
+
+Consumers in India overpay 40-60% on everyday
+products — clothing, groceries, essentials — because of
+a long chain of distributors, wholesalers, and retailers.
+Small factories have excess capacity in slow months and
+receive late payments from wholesalers. Neither side
+has a direct connection to the other.
+
+One app where consumers group their orders in 24-48
+hour windows. Map clustering combines nearby orders
+into bulk. Bulk order goes direct to local small factory.
+Consumer saves 35-50%. Factory gets guaranteed
+volume and 48-hour payment. No middleman involved at
+any stage.
+
+
+METRIC
+
+TARGET
+
+Customer saving vs retail
+
+35-50% on clothing. 30-45% on grocery essentials.
+
+Factory payment time
+
+30% advance before production. 70% within 48 hours of delivery
+confirmation.
+
+Delivery time
+
+3-7 days from order lock to anchor point collection.
+
+Minimum order per group
+
+25 units — hit through zone clustering within 24-48 hour timer.
+
+App registration time
+
+Under 3 minutes for both customer and factory.
+
+Factory verification time
+
+Document review within 48 hours. Physical visit within 14 days.
+
+
+
+
+2. USER PERSONAS
+
+FactoryLink serves two primary user types on the same platform. Every product decision must consider both
+personas equally.
+
+
+PRIYA — 32
+
+
+Working mothernTier 2 city
+
+
+PAIN:
+
+
+Pays retail price for
+
+rice, oil, flour every
+
+month. No access to
+
+wholesale prices.
+
+
+GAIN FROM APP:
+
+
+Saves
+
+Rs.800-1200/month
+
+on groceries. Collects
+
+from office anchor
+
+point on way home.
+
+
+RAHUL — 24
+
+
+College student
+
+
+PAIN:
+
+
+Buys clothing from
+
+retail mall. Cannot
+
+afford quality at
+
+current prices.
+
+
+GAIN FROM APP:
+
+
+Gets branded quality
+
+t-shirts at 42% below
+
+retail. Order delivered
+
+to college gate.
+
+
+MRS SHARMA — 52
+
+
+HomemakernColony resident
+
+
+PAIN:
+
+
+Goes to market
+
+weekly. Spends more
+
+than needed. No bulk
+
+buying option for one
+
+family.
+
+
+GAIN FROM APP:
+
+
+3-month grocery
+
+subscription.
+
+Delivered to colony.
+
+Saves time and
+
+money every month.
+
+
+RAMESH — 45
+
+
+Factory ownernSmall garment unit
+
+
+PAIN:
+
+
+Wholesaler pays after
+
+45 days. Orders dry
+
+up in summer.
+
+Machines sit idle.
+
+
+GAIN FROM APP:
+
+
+Guaranteed orders
+
+every month. 30%
+
+advance before
+
+production. 48-hour
+
+final payment.
+
+
+MOHAN — 38
+
+
+Rice mill owner
+
+
+PAIN:
+
+
+Dependent on one
+
+wholesaler who
+
+dictates price. No
+
+direct customer
+
+relationship.
+
+
+GAIN FROM APP:
+
+
+Multiple guaranteed
+
+bulk orders. Real
+
+customer feedback.
+
+Less dependency on
+
+wholesaler.
+
+
+PERSONA
+
+PRIMARY GOAL
+
+SECONDARY
+GOAL
+
+BIGGEST FEAR
+
+SUCCESS
+METRIC
+
+Priya — Working
+Mother
+
+Save money on
+monthly groceries
+
+Convenient
+collection at office
+
+Quality worse than
+retail shop
+
+Saving Rs.1000+
+per month
+consistently
+
+Rahul — Student
+
+Affordable quality
+clothing
+
+Easy group order
+with friends
+
+Paying in advance
+and not receiving
+
+First order
+delivered correctly
+and on time
+
+Mrs Sharma —
+Homemaker
+
+3-month grocery
+subscription
+
+Colony delivery
+convenience
+
+Committing 3 months
+and quality dropping
+
+Monthly renewal
+rate above 80%
+
+Ramesh —
+Factory Owner
+
+Guaranteed monthly
+order volume
+
+Faster payment than
+wholesaler
+
+Platform not
+delivering promised
+order volume
+
+Minimum 100
+units per month
+within 3 months
+
+Mohan — Mill
+Owner
+
+Direct bulk orders from
+consumers
+
+Reduce wholesaler
+dependency
+
+Existing wholesaler
+finding out and
+retaliating
+
+Platform orders
+covering 30%+ of
+monthly output
+
+
+
+
+3. CORE FEATURES — CUSTOMER SIDE
+
+Customer-Facing Features
+
+
+C1
+
+Two-Path Entry Screen
+
+CRITICAL
+
+First screen shows I AM A CUSTOMER and I AM A FACTORY.
+Single tap selects the correct experience. No other content on
+this screen.
+
+
+C2
+
+Customer Registration
+
+CRITICAL
+
+Phone number with OTP verification. Full name. Home address
+with pin code. Anchor point selection from map. Maximum 3
+minutes to complete. No email required at registration.
+
+
+C3
+
+Product Browse and
+Discovery
+
+CRITICAL
+
+Product listings showing factory price, retail comparison price,
+saving percentage, zone progress bar, and timer countdown.
+Factory verification badge visible on every listing.
+
+
+C4
+
+Zone Progress Bar
+
+CRITICAL
+
+Live bar showing current orders vs minimum needed in
+customer's zone. Updates in real time. Shows how many people
+from same office or college have joined. Drives social sharing.
+
+
+C5
+
+Group Order Timer
+
+CRITICAL
+
+24 to 48 hour countdown visible on every product. Urgency
+messaging changes as timer decreases. When pool locks —
+confirmation notification sent to all members.
+
+
+C6
+
+Split Payment
+
+CRITICAL
+
+Customer pays 30% at booking via UPI or wallet. Remaining
+70% collected before delivery. For subscription customers —
+wallet model with monthly top-up. Factory never paid until
+delivery confirmed.
+
+
+C7
+
+Anchor Point Selection
+
+HIGH
+
+Map view showing all verified anchor points within 3 km. College
+gates, office buildings, markets, schools. Customer selects their
+primary pickup location at registration. Can change any time.
+
+
+C8
+
+Order Tracking
+
+HIGH
+
+Real-time status updates: Order confirmed, Pool locked, Factory
+assigned, In production, Ready for dispatch, In transit, At anchor
+point. Push notification at every stage change.
+
+
+C9
+
+QR Code Collection
+
+HIGH
+
+Unique QR code generated per order. Customer scans at
+anchor point for collection. Anchor point manager scans to
+confirm receipt. Triggers final payment release to factory
+automatically.
+
+
+
+
+C10
+
+Quality Rating
+
+HIGH
+
+1-5 star rating with optional photo after collection. Rating feeds
+directly into factory trust score. Mandatory prompt — if not rated
+in 24 hours order auto-completes with neutral score.
+
+
+C11
+
+Grocery Subscription
+
+HIGH
+
+Customer selects monthly grocery basket from 8 essential
+items. Chooses 1, 2, or 3 month commitment via slider. Price
+shown drops as commitment increases. Auto-renewal with one
+tap.
+
+
+C12
+
+Social Sharing and
+Referral
+
+HIGH
+
+Share button on every active group order. Generates
+zone-specific link. When 3 friends order — sharer gets 5%
+discount on next order. Fills zone faster with zero marketing
+spend.
+
+
+C13
+
+Factory Price
+Transparency
+
+HIGH
+
+Every product page shows full price breakdown: factory price,
+GST, logistics fee, platform fee, total customer pays, retail
+comparison. Honest numbers only. No hidden charges.
+
+
+C14
+
+Seasonal Migration
+Prompt
+
+MEDIUM
+
+When college anchor point is closing for vacation — 2 week
+advance prompt to migrate delivery preference to home address
+or nearest market pickup point. One tap migration.
+
+
+C15
+
+Retailer Price Scanner
+
+FUTURE
+
+Barcode scanner in app. Customer scans product in any shop.
+App shows same or similar product available on FactoryLink at
+lower price with option to join next group order immediately.
+
+
+
+
+4. CORE FEATURES — FACTORY SIDE
+
+
+F1
+
+Factory Registration
+Flow
+
+CRITICAL
+
+Business name, owner name, mobile with OTP, WhatsApp
+number, address, pin code. Document uploads: GST certificate,
+MSME Udyam, bank details, owner photo ID, factory exterior
+photo. Maximum 10 minutes.
+
+
+F2
+
+Capacity and Product
+Setup
+
+CRITICAL
+
+Select product categories. Set maximum units per day. Set
+minimum order quantity. Set production lead time in days. Mark
+slow season months. All feeds into routing algorithm
+automatically.
+
+
+F3
+
+Pricing Tier
+Configuration
+
+CRITICAL
+
+Three price tiers per product category: 25-50 units, 51-150
+units, 151+ units. Prices agreed with FactoryLink team during
+onboarding visit and entered by team — not by factory alone.
+
+
+F4
+
+Today Screen — Order
+Notifications
+
+CRITICAL
+
+Push notification for every new order. Large text showing:
+product, quantity, payment amount, dispatch deadline. Two
+buttons: Accept (green) and Decline (red). No other action
+required. 2-hour response window.
+
+
+F5
+
+Production Tracker
+Screen
+
+HIGH
+
+List of all accepted orders in production. Status update options:
+Started, Halfway, Ready for dispatch. Factory updates status
+with one tap. Your operations team sees updates in real time on
+admin dashboard.
+
+
+F6
+
+Dispatch Confirmation
+
+HIGH
+
+When order is packed — factory marks Ready for dispatch.
+Courier partner notified automatically. Factory optionally
+uploads photo of packed order. Tracking begins from dispatch
+confirmation.
+
+
+F7
+
+Payment Dashboard
+
+HIGH
+
+Shows all payment events per order: advance received, final
+payment pending, final payment released. Total earnings this
+month. Total earnings since joining. Raises payment query if
+discrepancy found.
+
+
+F8
+
+Weekly Availability
+Toggle
+
+HIGH
+
+Every Monday push notification to update availability. Three
+options: Full capacity, Partial capacity, Not accepting orders.
+One tap. If not updated for 2 weeks — auto-set to not accepting
+until updated.
+
+
+
+
+F9
+
+Trust Score Display
+
+MEDIUM
+
+Factory sees their own trust score broken into four components:
+quality, on-time rate, acceptance rate, response speed. Shows
+trend over last 30 days. Motivates quality improvement through
+visibility.
+
+
+F10
+
+Relationship Manager
+Contact
+
+MEDIUM
+
+Direct WhatsApp link to their assigned FactoryLink relationship
+manager visible on every screen. Factory can always reach a
+human for any issue they cannot resolve in app.
+
+
+
+
+5. FEATURE PRIORITY MATRIX — WHAT TO BUILD FIRST
+
+Features plotted by business impact versus development effort. Build top-right quadrant first. These give
+maximum value with minimum cost.
+
+
+LOW IMPACT
+
+LOW EFFORT
+
+
+HIGH IMPACT
+
+LOW EFFORT H
+
+
+LOW IMPACT
+
+HIGH EFFORT
+
+
+HIGH IMPACT
+
+HIGH EFFORT
+
+
+LOW EFFORT ®
+
+HIGH IMPACT ®
+
+
+C2 Reg
+
+
+C3 Browse
+
+
+C6 Pay
+
+
+F4 Orders
+
+
+C4 Zone
+
+
+C8 Track
+
+
+C11 Sub
+
+
+F3 Price
+
+
+C12 Share
+
+
+C15 Scan
+
+
+C14 Mig
+
+
+F9 Score
+
+
+BUILD ORDER: C2 Registration ® C3 Browse ® C4 Zone Bar ® C5 Timer ® C6 Payment ® F1
+Factory Registration ® F4 Order Notifications ® C8 Tracking ® C9 QR Collection ® C10 Rating.
+Everything else comes after first 500 customers are live and model is proven.
+
+
+
+
+6. USER JOURNEY MAPS
+
+
+Customer Journey — First Order
+
+
+Downloads
+
+App
+
+
+Selects
+
+Customer
+
+
+Registers
+
+3 min
+
+
+Picks
+
+Anchor
+
+Point
+
+
+Browses
+
+Products
+
+
+Joins
+
+Group
+
+Order
+
+
+Pays
+
+30%
+
+
+Gets
+
+Notified
+
+When Ready
+
+
+Pays
+
+70%
+
+
+Scans
+
+QR
+
+Collects
+
+
+Rates
+
+Quality
+
+
+Factory Journey — First Order
+
+
+Downloads
+
+App
+
+
+Selects
+
+Factory
+
+
+Fills
+
+Profile
+
+
+Uploads
+
+Docs
+
+
+Team
+
+Verifies
+
+48hrs
+
+
+Sets
+
+Pricing
+
+
+Goes
+
+Live
+
+
+Gets
+
+Order
+
+Alert
+
+
+Accepts
+
+
+Produces
+
+Dispatches
+
+
+Gets
+
+Paid
+
+48hrs
+
+
+Customer Journey — Grocery Subscription
+
+
+Opens
+
+App
+
+
+Taps
+
+Subscribe
+
+
+Picks
+
+8 Items
+
+
+Selects
+
+1-3
+
+Months
+
+
+Pays via
+
+Wallet
+
+
+Receives
+
+Monthly
+
+
+Auto
+
+Renews
+
+
+
+
+7. SCREEN REQUIREMENTS — KEY SCREENS
+
+
+Customer App — Key Screens
+
+
+ENTRY
+
+
+I AM A CUSTOMER
+
+I AM A FACTORY
+
+
+ENTRY
+
+
+HOME
+
+
+Active Orders
+
+Zone Progress
+
+New Products
+
+Timer
+
+
+HOME
+
+
+PRODUCT
+
+
+Factory Price
+
+Retail Compare
+
+Zone Bar
+
+Join Order
+
+
+PRODUCT
+
+
+PAYMENT
+
+
+30% Now
+
+70% Later
+
+UPI / Wallet
+
+Confirm
+
+
+PAYMENT
+
+
+TRACK
+
+
+Status Bar
+
+Factory Name
+
+ETA
+
+Anchor Map
+
+
+TRACK
+
+
+COLLECT
+
+
+QR Scanner
+
+Package Name
+
+Rate Now
+
+Done
+
+
+COLLECT
+
+
+Factory App — Key Screens
+
+
+TODAY
+
+
+New Order!
+
+Accept
+
+Decline
+
+Chat Manager
+
+
+TODAY
+
+
+PRODUCE
+
+
+Order #123
+
+25 T-Shirts
+
+Status Update
+
+By Wed
+
+
+PRODUCE
+
+
+DISPATCH
+
+
+Order Ready
+
+Upload Photo
+
+Confirm Send
+
+Courier ETA
+
+
+DISPATCH
+
+
+PAYMENTS
+
+
+Advance Recd
+
+Pending
+
+Released
+
+Total Month
+
+
+PAYMENTS
+
+
+
+
+8. NON-FUNCTIONAL REQUIREMENTS
+
+
+CATEGORY
+
+REQUIREMENT
+
+TARGET
+
+RATIONALE
+
+Performance
+
+App load time
+
+Under 2 seconds on 4G
+connection
+
+India users on mid-range Android. Slow app
+loses customers immediately.
+
+Performance
+
+Zone progress bar
+update
+
+Real-time — under
+500ms
+
+Progress bar must feel live. Delayed updates
+kill the urgency of the group order.
+
+Reliability
+
+Platform uptime
+
+99.5% minimum
+
+Order windows are 24-48 hours. Any
+downtime during active timers loses customer
+trust permanently.
+
+Security
+
+Payment data
+
+PCI DSS compliant via
+Razorpay
+
+Never store card details. All payment data
+handled by certified payment gateway only.
+
+Security
+
+Customer data privacy
+
+Factory never sees
+customer name or
+address
+
+Prevents factories bypassing platform to deal
+directly with customers.
+
+Scalability
+
+Concurrent users
+
+Handle 10,000
+simultaneous users at
+launch
+
+Group order timers cause spikes in traffic
+when timers near expiry.
+
+Accessibility
+
+Language support
+
+Hindi and English at
+launch
+
+Tier 2 and 3 city customers may not be
+comfortable in English only.
+
+Offline
+
+Basic app function
+without internet
+
+View last known order
+status offline
+
+Connectivity in tier 2-3 cities can be
+intermittent. Critical info must be viewable
+offline.
+
+Notifications
+
+Push notification
+delivery rate
+
+Above 95% delivery rate
+
+Order confirmations and collection alerts are
+business-critical. Cannot afford to miss them.
+
+
+
+
+9. PRODUCT RELEASE ROADMAP
+
+Four release phases aligned with the business growth stages. Each phase adds features only when the
+previous phase is stable and validated with real users.
+
+
+PHASE 1nMVP
+
+
+Months 1-3
+
+
+ Customer registration
+
+ Factory registration
+
+ Product browse
+
+ Group order timer
+
+ Zone progress bar
+
+ Split payment
+
+ Basic tracking
+
+ QR collection
+
+ Quality rating
+
+
+PHASE 2nGROWTH
+
+
+Months 4-6
+
+
+ Grocery subscription
+
+ Wallet model
+
+ Anchor point manager app
+
+ Seasonal migration
+
+ Social sharing + referral
+
+ Route optimization
+
+ Admin dashboard v1
+
+
+PHASE 3nSCALE
+
+
+Months 7-12
+
+
+ B2B business accounts
+
+ Multi-city zone management
+
+ Dynamic pricing algorithm
+
+ Factory analytics dashboard
+
+ Customer membership tier
+
+ Hindi language support
+
+
+PHASE 4nDOMINATE
+
+
+Year 2+
+
+
+ Retailer price scanner
+
+ Private label products
+
+ Flash sale engine
+
+ National logistics integration
+
+ Factory premium listings
+
+ AI demand forecasting
+
+
+PHASE
+
+SUCCESS CRITERIA TO UNLOCK NEXT PHASE
+
+Phase 1 —
+MVP
+
+500 customers completed at least one order. 10 factories with trust score above 3.5. Logistics cost
+per order below Rs.35.
+
+Phase 2 —
+Growth
+
+5,000 customers active monthly. 3 cities live. Subscription customers above 20% of total base.
+Platform margin positive.
+
+Phase 3 —
+Scale
+
+50,000 customers. 10 cities. B2B accounts above 200. Monthly revenue above Rs.50 lakh.
+
+Phase 4 —
+Dominate
+
+5 lakh customers. National presence. Series A investment secured. Private label products
+launched in 2+ categories.
+
+
+
+
+10. SUCCESS METRICS — HOW WE MEASURE PRODUCT SUCCESS
+
+
+METRIC
+CATEGORY
+
+METRIC
+
+TARGET — MONTH 3
+
+TARGET — MONTH 12
+
+Acquisition
+
+Total registered customers
+
+500
+
+50,000
+
+Acquisition
+
+Total verified factories
+
+20
+
+300
+
+Activation
+
+% customers who complete
+first order
+
+Above 60%
+
+Above 75%
+
+Retention
+
+Monthly repeat order rate
+
+Above 40%
+
+Above 65%
+
+Retention
+
+Grocery subscription renewal
+rate
+
+Above 70%
+
+Above 85%
+
+Revenue
+
+Average platform fee per order
+
+Rs.18-25
+
+Rs.22-30
+
+Revenue
+
+Monthly GMV (gross
+merchandise value)
+
+Rs.5-10 Lakh
+
+Rs.5 Crore+
+
+Quality
+
+Average factory trust score
+
+Above 3.8
+
+Above 4.1
+
+Quality
+
+Order fulfillment rate (no
+failures)
+
+Above 92%
+
+Above 97%
+
+Logistics
+
+Average delivery time from
+lock
+
+Under 7 days
+
+Under 5 days
+
+Logistics
+
+Logistics cost per order
+
+Under Rs.35
+
+Under Rs.25
+
+FactoryLink — Product Requirements Document v1.0
+
+This document defines what FactoryLink must do, for whom, and how success is measured. All development decisions
+must trace back to a requirement in this document.
+

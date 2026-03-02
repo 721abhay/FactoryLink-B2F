@@ -14,6 +14,9 @@ class _FactoryRegistrationScreenState extends State<FactoryRegistrationScreen> {
   final _gstCtrl = TextEditingController();
   final _addrCtrl = TextEditingController();
   final _capCtrl = TextEditingController();
+  final _msmeCtrl = TextEditingController();
+  final _accCtrl = TextEditingController();
+  final _ifscCtrl = TextEditingController();
   int _selectedCat = -1;
 
   final _categories = [
@@ -82,25 +85,62 @@ class _FactoryRegistrationScreenState extends State<FactoryRegistrationScreen> {
     const SizedBox(height: 28),
     _field('Factory / Business Name', _nameCtrl, Icons.factory_rounded),
     const SizedBox(height: 14),
-    _field('GST Number', _gstCtrl, Icons.receipt_rounded),
-    const SizedBox(height: 14),
     _field('Factory Address', _addrCtrl, Icons.location_on_rounded, lines: 3),
-    const SizedBox(height: 20),
-    // Document upload
-    Container(
-      width: double.infinity, height: 100,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14), color: C.orangeSurface,
-        border: Border.all(color: C.orange.withValues(alpha: 0.3), style: BorderStyle.solid),
-      ),
-      child: const Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Icon(Icons.cloud_upload_rounded, color: C.orange, size: 30),
-        SizedBox(height: 6),
-        Text('Upload Business License', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: C.orange)),
-        Text('PDF, JPG up to 5MB', style: S.caption),
-      ]),
-    ),
+    const SizedBox(height: 28),
+    const Text('Registration & Banking', style: S.h4),
+    const SizedBox(height: 14),
+    _field('GST Number', _gstCtrl, Icons.receipt_long_rounded),
+    const SizedBox(height: 14),
+    _field('MSME Registration Number', _msmeCtrl, Icons.verified_rounded),
+    const SizedBox(height: 14),
+    _field('Bank Account Number', _accCtrl, Icons.account_balance_rounded, keyboard: TextInputType.number),
+    const SizedBox(height: 14),
+    _field('IFSC Code', _ifscCtrl, Icons.tag_rounded),
+    const SizedBox(height: 28),
+    const Text('Upload Documents', style: S.h4),
+    const SizedBox(height: 14),
+    _documentUploadBtn('Business License / GST'),
+    const SizedBox(height: 10),
+    _documentUploadBtn('MSME Certificate'),
+    const SizedBox(height: 10),
+    _documentUploadBtn('Cancelled Cheque'),
   ]);
+
+  Widget _documentUploadBtn(String title) {
+    return Container(
+      width: double.infinity, height: 64,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14), color: C.surface,
+        border: Border.all(color: C.border),
+      ),
+      child: Row(children: [
+        const SizedBox(width: 16),
+        Container(
+          width: 38, height: 38,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: C.orange.withValues(alpha: 0.1)),
+          child: const Icon(Icons.cloud_upload_rounded, color: C.orange, size: 20),
+        ),
+        const SizedBox(width: 14),
+        Expanded(child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: C.text)),
+            const Text('PDF, JPG up to 5MB', style: TextStyle(fontSize: 11, color: C.textTer)),
+          ]
+        )),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: C.orange),
+          ),
+          child: const Text('Add', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: C.orange)),
+        ),
+        const SizedBox(width: 16),
+      ]),
+    );
+  }
 
   Widget _stepCategory() => Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
     Container(width: 56, height: 56, decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: C.orangeSurface),

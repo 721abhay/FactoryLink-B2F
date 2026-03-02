@@ -46,19 +46,37 @@ class _AddProductScreenState extends State<AddProductScreen> {
           ]),
           const SizedBox(height: 24),
 
-          // Pricing structure
-          const SectionHeader(title: 'Guaranteed Pricing Model'),
+          // Capacity & Production
+          const SectionHeader(title: 'Capacity & Production (TRD F2)'),
           AppCard(child: Column(children: [
-            _priceRow('Retail Market Price (₹)', 'e.g. 500'),
+            _field('Maximum Units Per Day', 'e.g. 500', icon: Icons.production_quantity_limits_rounded),
+            const SizedBox(height: 16),
+            _field('Minimum Order Quantity', 'e.g. 25', icon: Icons.shopping_basket_rounded),
+            const SizedBox(height: 16),
+            _field('Production Lead Time (Days)', 'e.g. 3', icon: Icons.schedule_rounded),
+            const SizedBox(height: 16),
+            _field('Slow Season Months', 'e.g. June, July', icon: Icons.calendar_month_rounded),
+          ])),
+          const SizedBox(height: 24),
+
+          // Pricing structure
+          const SectionHeader(title: 'Guaranteed Pricing Model (TRD F3)'),
+          Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 12),
+            decoration: BoxDecoration(color: C.blueLight.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12)),
+            child: const Row(children: [
+              Icon(Icons.info_outline_rounded, color: C.blue, size: 20),
+              SizedBox(width: 12),
+              Expanded(child: Text('Prices are agreed with the FactoryLink team during onboarding and entered by the team.', style: TextStyle(fontSize: 12, color: C.blue))),
+            ]),
+          ),
+          AppCard(child: Column(children: [
+            _priceRow('Tier 1 (25-50 units)', 'e.g. 350'),
             const Divider(height: 24),
-            _priceRow('Tier 1 (Base Factory Price)', 'e.g. 350'),
-            Text('Applies automatically for single purchases', style: S.caption.copyWith(color: C.orange)),
+            _priceRow('Tier 2 (51-150 units)', 'e.g. 300'),
             const Divider(height: 24),
-            _priceRow('Tier 2 (Group Price)', 'e.g. 300'),
-            _priceRow('Group Min Quantity', 'e.g. 50'),
-            const Divider(height: 24),
-            _priceRow('Tier 3 (Bulk B2B Price)', 'e.g. 250'),
-            _priceRow('Bulk Min Quantity', 'e.g. 200'),
+            _priceRow('Tier 3 (151+ units)', 'e.g. 250'),
           ])),
           const SizedBox(height: 24),
 

@@ -12,16 +12,18 @@ class _AddressesScreenState extends State<AddressesScreen> {
 
   final _addresses = [
     {
-      'type': 'Home',
-      'name': 'Abhay Singh',
-      'address': 'B-302, Green Valley Apartments, Sector 14, Gurugram, 122001',
-      'phone': '+91 98765 43210',
+      'type': 'Office Building',
+      'name': 'Primary Pick-up: Cyber City Building 10',
+      'address': 'Level 4 Drop-off, Cyber City, DLF Phase 2, Gurugram (0.8km away)',
+      'phone': 'Manager: +91 98765 43210',
+      'zone': 'Zone B · Healthy',
     },
     {
-      'type': 'Office',
-      'name': 'Abhay Singh',
-      'address': 'Level 4, Cyber City Building 10, DLF Phase 2, Gurugram, 122002',
-      'phone': '+91 98765 43210',
+      'type': 'College Gate',
+      'name': 'MDI Main Gate',
+      'address': 'Mehrauli-Gurgaon Rd, Sector 14, Gurugram (2.1km away)',
+      'phone': 'Manager: +91 98765 11223',
+      'zone': 'Zone A · Forming',
     },
   ];
 
@@ -29,7 +31,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: C.bg,
-      appBar: AppBar(title: const Text('My Addresses'), backgroundColor: C.bg, elevation: 0, scrolledUnderElevation: 0.5),
+      appBar: AppBar(title: const Text('My Anchor Points (TRD C7)'), backgroundColor: C.bg, elevation: 0, scrolledUnderElevation: 0.5),
       body: ListView(
         padding: const EdgeInsets.all(20),
         children: [
@@ -54,7 +56,9 @@ class _AddressesScreenState extends State<AddressesScreen> {
                 const SizedBox(height: 4),
                 Text(a['address']!, style: S.body.copyWith(fontSize: 13, height: 1.4, color: C.textSec)),
                 const SizedBox(height: 8),
-                Text('Phone: ${a['phone']}', style: S.caption),
+                Text('Zone: ${a['zone']}', style: S.caption.copyWith(color: a['zone']!.contains('Healthy') ? C.green : C.orange)),
+                const SizedBox(height: 4),
+                Text('${a['phone']}', style: S.caption),
                 const Divider(height: 24),
                 Row(children: [
                   if (!isDefault) Expanded(child: AppBtn(text: 'Set as Default', onTap: () => setState(() => _defaultIdx = i), outline: true)),
@@ -71,7 +75,7 @@ class _AddressesScreenState extends State<AddressesScreen> {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
         decoration: BoxDecoration(color: C.surface, boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 10, offset: const Offset(0, -3))]),
-        child: SafeArea(child: AppBtn(text: 'Add New Address', onTap: () {}, color: C.blue, icon: Icons.add_rounded)),
+        child: SafeArea(child: AppBtn(text: 'Select on Map (within 3km)', onTap: () {}, color: C.blue, icon: Icons.map_rounded)),
       ),
     );
   }

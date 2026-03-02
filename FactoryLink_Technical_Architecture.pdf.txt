@@ -1,0 +1,1327 @@
+
+FACTORYLINK
+
+Technical Blueprint
+
+Algorithm · System Architecture · Business Logic
+
+
+PART 1 — ALGORITHMS
+
+PART 2 — ARCHITECTURE
+
+PART 3 — LOGIC
+
+5 core algorithms that power the
+platform. How orders group, how
+factories are matched, how zones
+cluster, how routes are built, how
+prices adjust.
+
+6 technical layers from mobile app to
+database. Every service, every
+integration, every component that
+makes the system run.
+
+5 core business rules that govern all
+decisions. Order states, money flow,
+trust scoring, failure handling, zone
+rebalancing.
+
+
+
+
+PART 1 — ALGORITHMS
+
+
+ALGORITHM 1 — Group Order Matching
+
+The core brain of the platform. Every time a customer places an order this algorithm searches for other
+nearby orders to group with it automatically.
+
+
+Customer
+
+Places Order
+
+
+Search Open
+
+Pools Nearby
+
+(3 km radius)
+
+
+Matching Pool
+
+Exists?
+
+
+Join Existing
+
+Pool
+
+
+Create New
+
+Pool + Timer
+
+
+INPUT
+
+PROCESS
+
+OUTPUT
+
+FALLBACK IF
+MINIMUM NOT HIT
+
+Product ordered,
+customer
+location, order
+timestamp
+
+Search all pending orders within 3
+km for same category within active
+timer window. Join existing pool if
+found. Create new pool if not.
+
+Order assigned to a pool.
+Timer running. Progress bar
+updates for all pool
+members.
+
+At timer expiry below
+minimum: cancel all
+orders with full refund OR
+source from nearest
+wholesaler temporarily at
+reduced discount to still
+fulfill the customer.
+
+
+ALGORITHM 2 — Factory Routing
+
+Once a group order pool locks this algorithm decides which factory receives the order. It filters, ranks, and
+assigns automatically. If first factory declines it cascades to the next.
+
+
+Pool Locks
+
+
+Find Factories
+
+within 15 km
+
+
+Filter by
+
+Capacity +
+
+Score
+
+
+Rank
+
+Factories
+
+
+Send to #1
+
+Factory
+
+
+Accepted?
+
+
+RANKING FACTOR
+
+PRIORITY
+
+LOGIC
+
+Trust score tier
+
+1st — highest
+priority
+
+Top Rated factories always get first offer. Suspended factories never
+receive offers.
+
+Distance from zone
+
+2nd
+
+Closer factory means shorter delivery distance and lower logistics
+cost.
+
+Available capacity
+
+3rd
+
+Factory near their weekly limit ranks lower than factory with
+abundant spare capacity.
+
+
+
+
+Slow season flag
+
+4th
+
+Factory in their declared slow season ranks higher — they need
+orders most right now.
+
+Response history
+
+5th
+
+Factory that consistently responds within 1 hour ranks above slow
+responders.
+
+
+ALGORITHM 3 — Zone Clustering
+
+Runs continuously in the background. Groups customers and anchor points within 1.5-2 km into delivery
+zones. Zones are not fixed — they recalculate weekly based on real customer density.
+
+
+ZONE A
+
+(Healthy)
+
+32 orders
+
+
+ZONE B
+
+(Healthy)
+
+28 orders
+
+
+ZONE C
+
+(Thin)
+
+8 orders
+
+
+College
+
+
+Office
+
+
+Market
+
+
+School
+
+
+Office B
+
+
+Customer home
+
+Anchor point
+
+
+Delivery zone
+
+Thin zone (merges)
+
+
+ZONE STATE
+
+HEALTH SCORE
+
+WHAT HAPPENS
+
+Healthy zone
+
+Above 0.8 (e.g. 40 orders / 25
+minimum = 1.6)
+
+Normal delivery cycle. Orders dispatched on schedule. No
+action needed.
+
+Warning zone
+
+0.4 to 0.8 (e.g. 15 orders / 25
+minimum = 0.6)
+
+App sends targeted push to zone customers showing how close
+they are to unlocking delivery. Encourage sharing to fill zone
+faster.
+
+Thin zone
+
+Below 0.4 for 2 consecutive
+weeks
+
+Zone temporarily merges with nearest healthy zone. Customers
+notified 48 hours before pickup point changes. Zone can regain
+independence after 4 weeks above 0.8.
+
+
+ALGORITHM 4 — Route Optimization
+
+Every morning this builds the day's delivery routes. Takes all confirmed dispatch-ready orders, plots them
+geographically, and builds the most efficient circular route.
+
+
+
+
+Factory
+
+Warehouse
+
+
+1
+
+
+Colony A
+
+(10 orders)
+
+
+2
+
+
+Office Zone
+
+(22 orders)
+
+
+3
+
+
+College
+
+(18 orders)
+
+
+4
+
+
+Colony B
+
+(6 orders)
+
+
+5
+
+
+Market
+
+(14 orders)
+
+
+6
+
+
+Colony C
+
+(4 orders)
+
+
+7
+
+
+Return to base — circular route complete
+
+
+STEP
+
+WHAT HAPPENS
+
+RESULT
+
+Cluster stops
+
+Group all delivery addresses within 500
+meter circles into one cluster
+
+Reduces 100 individual addresses to 15-20
+manageable cluster stops
+
+Sequence
+clusters
+
+Order clusters geographically to minimize
+total travel distance using
+nearest-neighbor logic
+
+Efficient circular route from dispatch point covering
+all clusters
+
+Assign to driver
+
+Sequenced stop list sent to delivery
+driver's phone every morning by 7 AM
+
+Driver follows the route. No decisions needed.
+Just follow the sequence.
+
+Real time update
+
+If an order is added or cancelled after
+route is built the algorithm re-optimizes
+
+Route adjusts dynamically. Driver gets updated
+stop list on phone instantly.
+
+
+ALGORITHM 5 — Dynamic Pricing and Urgency
+
+Adjusts what customers see based on how full the group order pool is. Creates urgency that drives the last
+joiners to complete the order.
+
+
+Pool 0-29%
+
+Full
+
+
+Pool 30-49%
+
+Full
+
+
+Pool 50-79%
+
+Full
+
+
+Pool 80-99%
+
+Full
+
+
+Pool 100%+
+
+Full
+
+
+POOL FILL
+LEVEL
+
+WHAT CUSTOMER SEES
+
+SYSTEM ACTION
+
+0 to 29% full
+
+Product listing with price and timer.
+Zone progress bar.
+
+Standard display. No urgency messaging.
+
+30 to 49% full
+
+Progress bar visibly moving. Others
+in your area have joined.
+
+Send notification to customers who viewed but did not
+order yet.
+
+
+
+
+50 to 79% full
+
+Price locked at this level message.
+Halfway there.
+
+Increase notification frequency. Push to customers who
+saved product to wishlist.
+
+80 to 99% full
+
+Only X spots left. Timer countdown
+more prominent.
+
+FOMO notification to all zone customers who have not yet
+joined.
+
+100%+ full
+
+Order confirmed! Production
+begins.
+
+Query factory if they can accommodate extra units. If yes
+— pool expands. If no — overflow opens new pool.
+
+
+
+
+PART 2 — SYSTEM ARCHITECTURE
+
+The platform is built in 6 layers. Each layer has one clear responsibility. If one layer has a problem it does not
+bring down the others. This separation is what allows the platform to scale and be maintained reliably.
+
+
+LAYER 6 — ADMIN DASHBOARD
+
+
+Operations Map
+
+Factory Verification Queue
+
+Payment Reconciliation
+
+Quality Disputes
+
+Zone Health Monitor
+
+
+LAYER 5 — THIRD PARTY INTEGRATIONS
+
+
+Razorpay (Payments)
+
+Firebase (Push Notifications)
+
+Google Maps API
+
+Twilio/Gupshup (WhatsApp + SMS)
+
+
+LAYER 4 — DATABASE LAYER
+
+
+PostgreSQL (Structured Data)
+
+Redis (Cache + Live Data)
+
+S3 (File Storage)
+
+
+LAYER 3 — CORE BACKEND SERVICES
+
+
+Order Service
+
+Matching Service
+
+Factory Service
+
+Zone Service
+
+Payment Service
+
+Notification Service
+
+Analytics Service
+
+
+LAYER 2 — API GATEWAY
+
+
+Authentication
+
+Rate Limiting
+
+Request Routing
+
+Logging
+
+
+LAYER 1 — CLIENT APPS
+
+
+Customer App (Android + iOS)
+
+Factory App (Android + iOS)
+
+Both from same codebase
+
+
+Layer 1 — Client Apps
+
+
+COMPONENT
+
+WHAT IT DOES
+
+KEY PRINCIPLE
+
+Customer App
+
+Browse products, join group orders, pay, track
+delivery, rate quality, manage subscription
+
+Thin client — displays data only. All business
+logic runs on server. App never makes direct
+decisions.
+
+Factory App
+
+See incoming orders, accept/decline, update
+production status, view payments
+
+Four screens maximum. Simple as
+WhatsApp. Push notification for every order.
+Two tap maximum for any action.
+
+Shared
+Codebase
+
+Both apps built from same code. Registration type
+determines which screens are shown
+
+One download link. Lower development cost.
+Consistent updates to both sides
+simultaneously.
+
+
+Layer 2 — API Gateway
+
+
+FUNCTION
+
+WHAT IT DOES
+
+WHY IT MATTERS
+
+
+
+
+Authentication
+
+Every request carries a user token. Gateway
+verifies token before passing request to
+backend.
+
+Prevents unauthorized access. Factory cannot
+access customer data. Customer cannot see
+factory internals.
+
+Rate Limiting
+
+Maximum requests per user per minute
+enforced at gateway level.
+
+Prevents any single user or bot from
+overwhelming the system with requests.
+
+Request
+Routing
+
+Gateway reads the request type and sends it
+to the correct backend service.
+
+Order requests go to Order Service. Payment
+requests go to Payment Service. Never mixed up.
+
+Logging
+
+Every single request logged with timestamp,
+user ID, action, and response time.
+
+Essential for debugging problems and
+understanding platform usage patterns.
+
+
+Layer 3 — Core Backend Services
+
+
+SERVICE
+
+RESPONSIBILITY
+
+TALKS TO
+
+Order Service
+
+Creates, updates, tracks, locks, and
+cancels orders. Manages order state
+machine.
+
+Matching Service (when new order created),
+Payment Service (when order locks), Notification
+Service (status changes)
+
+Matching Service
+
+Runs Algorithm 1 continuously. Groups
+orders into pools. Monitors timers. Locks
+pools.
+
+Order Service (to update order pool assignment),
+Factory Service (when pool locks to trigger
+routing)
+
+Factory Service
+
+Manages factory profiles, capacity, trust
+scores. Runs Algorithm 2 to route orders.
+
+Order Service (to assign order to factory),
+Notification Service (to alert factory of new order)
+
+Zone Service
+
+Runs Algorithm 3. Maintains zone health.
+Merges thin zones. Runs Algorithm 4 for
+routes.
+
+Order Service (to assign customer to zone),
+Notification Service (zone health alerts to
+customers)
+
+Payment Service
+
+Handles all money movement. Escrow
+holding, advance release, final payment,
+refunds.
+
+Order Service (payment triggered by order state
+changes), External payment gateway (Razorpay)
+
+Notification
+Service
+
+Sends all push notifications, WhatsApp
+messages, SMS for every platform event.
+
+All other services send notification requests here.
+This service talks to Firebase and Twilio/Gupshup.
+
+
+Layer 4 — Database Layer
+
+
+DATABAS
+E
+
+TYPE
+
+WHAT IS STORED HERE
+
+WHY THIS DATABASE
+
+PostgreSQ
+L
+
+Relational
+
+Customer profiles, factory profiles, orders,
+payments, zones, ratings, documents
+
+All data has clear relationships between
+tables. Reliable. Consistent. Good for
+financial data that must be accurate.
+
+
+
+
+Redis
+
+In-memory
+cache
+
+Live pool fill counts, zone health scores,
+factory availability flags, session tokens
+
+Extremely fast reads. The live progress
+bar a customer sees updates from Redis
+— not PostgreSQL. Speed matters here.
+
+Amazon S3
+
+File storage
+
+Factory photos, product images, quality
+complaint photos, GST certificates,
+Aadhaar copies
+
+Cheap storage for files. Never store files
+in the main database. Always in object
+storage like S3.
+
+
+
+
+PART 3 — BUSINESS LOGIC
+
+
+LOGIC 1 — Order State Machine
+
+Every order exists in exactly one state at any moment. Each state has defined triggers to move forward and
+defined fallbacks if it gets stuck.
+
+
+PENDING
+
+Customer paid
+
+30% advance
+
+
+POOLING
+
+Grouped with
+
+other orders
+
+
+POOL
+
+LOCKED
+
+Minimum hit
+
+
+FACTORY
+
+ASSIGNED
+
+Routed
+
+
+IN
+
+PRODUCTION
+
+Factory started
+
+
+READY
+
+Packed for
+
+dispatch
+
+
+IN
+
+TRANSIT
+
+Courier
+
+collected
+
+
+AT ANCHOR
+
+POINT
+
+Arrived
+
+
+COLLECTED
+
+Customer
+
+scanned
+
+
+COMPLETED
+
+Rated — factory
+
+paid
+
+
+STATE
+
+TRIGGER TO
+ADVANCE
+
+TIME LIMIT
+
+FALLBACK IF STUCK
+
+Pending ® Pooling
+
+Customer payment
+confirmed
+
+Immediate
+
+If payment fails — order stays pending. Retry
+prompt sent.
+
+Pooling ® Pool Locked
+
+Minimum quantity hit OR
+timer expires
+
+24-48 hours
+
+If minimum not hit — cancel with refund OR
+source from wholesaler.
+
+Pool Locked ® Factory
+Assigned
+
+Matching algorithm runs
+
+15 minutes
+
+If no factory found in 1 hour — ops team
+alerted manually.
+
+Factory Assigned ® In
+Production
+
+Factory taps Accept in
+app
+
+2 hours
+
+If no response in 2 hours — order moves to
+next ranked factory automatically.
+
+Ready ® In Transit
+
+Factory marks order as
+dispatched
+
+By agreed
+date
+
+If factory misses dispatch date — quality
+strike issued. Ops team calls factory.
+
+At Anchor ® Collected
+
+Customer scans QR
+code
+
+48 hours
+
+Reminder at 6h, 24h, 48h. After 48h —
+storage fee starts. After 5 days — returned
+and refunded.
+
+Collected ® Completed
+
+Customer rates order
+1-5 stars
+
+24 hours
+
+If no rating in 24h — auto-complete with
+neutral score. Factory still gets paid.
+
+
+LOGIC 2 — Money Flow Logic
+
+Money never sits idle and never goes to the wrong place at the wrong time. Every rupee has a defined path
+with defined triggers for each movement.
+
+
+
+
+CUSTOMER
+
+
+ESCROW
+
+(Platform)
+
+
+FACTORY
+
+
+30% advance
+
+at booking
+
+
+Refund if
+
+failure
+
+
+20% to start
+
+production
+
+
+70% after
+
+delivery confirmed
+
+
+Platform deducts 5-8% fee automatically before factory payment
+
+
+PAYMENT EVENT
+
+TRIGGER
+
+AMOUNT
+
+WHERE MONEY GOES
+
+Customer advance
+
+Customer confirms order
+and pays
+
+30% of order value
+
+Directly into escrow account. Not to
+platform. Not to factory.
+
+Factory production
+advance
+
+Order assigned to factory
+and factory accepts
+
+20% of order value
+
+Released from escrow to factory bank
+account within 1 hour.
+
+Customer final
+payment
+
+Customer pays remaining
+balance before delivery
+
+70% of order value
+
+Held in escrow until delivery
+confirmed.
+
+Factory final payment
+
+Customer scans QR and
+confirms collection
+
+80% of order value
+minus platform fee
+
+Released from escrow to factory
+within 48 hours.
+
+Platform fee deduction
+
+Automatic at time of
+factory final payment
+
+5-8% of total order
+value
+
+Transferred from escrow to platform
+operating account.
+
+Refund
+
+Order cancelled, quality
+rejected, factory failed
+
+100% of customer
+payment
+
+Released from escrow directly back to
+customer payment method within 2
+hours.
+
+
+LOGIC 3 — Factory Trust Score Logic
+
+Trust score is recalculated once every 7 days using a rolling 30-day window. One bad week does not destroy
+a factory. Consistent poor performance over a month definitely shows.
+
+
+40%
+
+
+Product
+
+Quality
+
+
+30%
+
+
+On-Time
+
+Delivery
+
+
+20%
+
+
+Order
+
+Acceptance
+
+
+10%
+
+
+Response
+
+Speed
+
+
+NEW
+
+
+VERIFIED 3.5+
+
+
+TOP RATED 4.2+
+
+
+
+
+COMPONENT
+
+WEIG
+HT
+
+MEASURED HOW
+
+SCORE IMPACT
+
+Product Quality Rating
+
+40%
+
+Customer star rating 1-5 after every
+collection. Rolling average over last 30
+days.
+
+One 1-star rating from a genuine
+defect can drop score by 0.15-0.20
+points.
+
+On-Time Delivery Rate
+
+30%
+
+Percentage of orders dispatched by
+the confirmed date. Tracked
+automatically by system.
+
+Missing dispatch date by even 1 day
+counts as late. Consistent punctuality
+builds this slowly.
+
+Order Acceptance
+Rate
+
+20%
+
+Orders accepted divided by total
+orders offered in last 30 days.
+
+Declining more than 30% of offered
+orders triggers score warning
+regardless of reason.
+
+Response Speed
+
+10%
+
+Average time from order notification to
+factory accept or decline. Target under
+2 hours.
+
+Factories responding under 1 hour get
+a small bonus. Over 4 hours get a
+small penalty.
+
+
+LOGIC 4 — Cascade Failure Prevention Logic
+
+No order should ever silently fail. Every failure state has a defined path with automatic escalation until the
+problem is resolved or customer is compensated.
+
+
+Order Locks
+
+
+Find factory
+
+< 15 km
+
+
+FOUND
+
+Assign order
+
+
+NOT FOUND
+
+Expand to 25 km
+
+
+FOUND
+
+Assign order
+
+
+STILL NOT
+
+Found
+
+
+Yes
+
+No
+
+
+Manual alert ® Ops team ® Find factory OR cancel with full refund + compensation credit
+
+
+FAILURE SCENARIO
+
+AUTOMATIC RESPONSE
+
+HUMAN ESCALATION TRIGGER
+
+No factory found within 15
+km
+
+Expand search radius to 25 km
+automatically. Re-run routing algorithm.
+
+If still no factory at 25 km — alert sent to
+ops team within 30 minutes.
+
+Factory declines order
+
+Move to next ranked factory
+automatically within 15 minutes.
+
+If 3 factories in a row decline — ops team
+alerted. Something unusual may be
+happening.
+
+Factory does not respond
+within 2 hours
+
+Order automatically moves to next
+ranked factory. Non-responding factory
+gets response score penalty.
+
+If factory misses 3 consecutive order
+notifications — ops team calls factory
+directly.
+
+
+
+
+Factory misses dispatch
+date
+
+System flags order as delayed.
+Customer gets notification with new
+expected date automatically.
+
+Ops team calls factory immediately. If no
+response in 4 hours — emergency
+backup factory activated.
+
+Customer does not collect
+within 48 hours
+
+Reminder notifications at 6h, 24h, 48h
+automatically.
+
+After 5 days uncollected — ops team
+decides whether to return to factory or
+donate locally.
+
+
+LOGIC 5 — Zone Rebalancing Logic
+
+Zones are living entities. They grow, shrink, merge, and split based on real customer activity. This logic
+ensures every customer always has a viable delivery option.
+
+
+TRIGGER
+
+CONDITION
+
+AUTOMATIC ACTION
+
+CUSTOMER COMMUNICATION
+
+Zone goes thin
+
+Health score below 0.4
+for first week
+
+Push notifications sent to all
+zone customers showing orders
+needed to unlock delivery.
+
+'Your zone needs 12 more orders
+this week. Share with friends to
+unlock delivery.'
+
+Zone stays thin
+
+Health score below 0.4
+for second consecutive
+week
+
+Zone flagged for merge review.
+Nearest healthy zone identified
+as merge target.
+
+48 hour advance notice sent:
+'Your pickup point is moving to
+[new location] from [date].'
+
+Zone merges
+
+Third week below
+threshold confirmed
+
+All zone customers reassigned
+to nearest healthy zone. Redis
+zone map updated immediately.
+
+Confirmation message with new
+anchor point details, map link, and
+collection schedule.
+
+Merged zone
+recovers
+
+New customer sign-ups
+bring density back above
+threshold in merged
+area
+
+System flags area for potential
+re-split. Monitored for 4
+consecutive weeks above 0.8.
+
+No communication until split
+confirmed. Then: 'Great news —
+your local zone is back!'
+
+New area
+reaches density
+
+15+ customers register
+in a previously
+uncovered area within 2
+km circle
+
+New zone automatically
+created. Nearest available
+anchor point assigned or new
+one recruited.
+
+Welcome to your new zone
+message with anchor point details
+and first delivery date.
+
+FactoryLink — Technical Blueprint
+
+Algorithm · System Architecture · Business Logic — Complete Technical Reference Document
+

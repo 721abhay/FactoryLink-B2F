@@ -1,0 +1,8 @@
+node_modules
+.env
+.env.local
+.gitignore
+uploads/*
+!uploads/.gitkeep
+config/firebase-service-account.json
+supabase

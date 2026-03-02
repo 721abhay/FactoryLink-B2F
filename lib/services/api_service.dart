@@ -6,10 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  // Change to Cloud Run URL once deployed
-  static const String baseUrl = 'http://10.0.2.2:3000/v1'; // Android emulator
-  // static const String baseUrl = 'http://localhost:3000/v1'; // iOS simulator
-  // static const String baseUrl = 'https://YOUR_CLOUD_RUN_URL/v1'; // Production
+  // Use 127.0.0.1 over USB cable (adb reverse tcp:3000 tcp:3000 is active)
+  static const String baseUrl = 'http://127.0.0.1:3000/v1'; 
+  // static const String baseUrl = 'http://10.0.2.2:3000/v1'; // Android emulator
 
   String? _token;
   String? _refreshToken;

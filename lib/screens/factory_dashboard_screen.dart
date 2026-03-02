@@ -15,6 +15,7 @@ class FactoryDashboardScreen extends StatefulWidget {
 }
 
 class _FactoryDashboardScreenState extends State<FactoryDashboardScreen> {
+  int _tab = 0;
   bool _isLoading = true;
   List<dynamic> _orders = [];
   double _todayEarnings = 0.0;

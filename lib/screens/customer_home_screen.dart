@@ -5,6 +5,7 @@ import 'order_tracking_screen.dart';
 import 'customer_profile_screen.dart';
 import 'search_screen.dart';
 import 'notifications_screen.dart';
+import '../services/api_service.dart';
 
 class CustomerHomeScreen extends StatefulWidget {
   const CustomerHomeScreen({super.key});
@@ -15,19 +16,49 @@ class CustomerHomeScreen extends StatefulWidget {
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   int _tab = 0;
 
-  final _products = [
-    {'name': 'Premium Cotton T-Shirt', 'factory': 'Tirupur Textiles', 'price': 199, 'retail': 499, 'save': 60, 'orders': 18, 'min': 25, 'time': '4h 23m', 'cat': 'Clothing', 'icon': Icons.checkroom_rounded, 'score': 4.3},
-    {'name': 'Basmati Rice 5kg', 'factory': 'Pune Rice Mill', 'price': 285, 'retail': 450, 'save': 37, 'orders': 22, 'min': 30, 'time': '2h 11m', 'cat': 'Groceries', 'icon': Icons.rice_bowl_rounded, 'score': 4.6},
-    {'name': 'Cold Pressed Oil 1L', 'factory': 'Village Oil Works', 'price': 180, 'retail': 320, 'save': 44, 'orders': 14, 'min': 20, 'time': '8h 45m', 'cat': 'Groceries', 'icon': Icons.water_drop_rounded, 'score': 4.1},
-    {'name': 'Handloom Bedsheet Set', 'factory': 'Panipat Weavers', 'price': 450, 'retail': 999, 'save': 55, 'orders': 9, 'min': 15, 'time': '12h 30m', 'cat': 'Home', 'icon': Icons.bed_rounded, 'score': 4.5},
-    {'name': 'Natural Soap Pack (6)', 'factory': 'Herbal Factory', 'price': 120, 'retail': 240, 'save': 50, 'orders': 20, 'min': 25, 'time': '1h 05m', 'cat': 'Personal Care', 'icon': Icons.soap_rounded, 'score': 4.2},
-    {'name': 'Steel Lunch Box', 'factory': 'Wazirpur Steel', 'price': 350, 'retail': 650, 'save': 46, 'orders': 7, 'min': 20, 'time': '18h 12m', 'cat': 'Kitchen', 'icon': Icons.lunch_dining_rounded, 'score': 4.4},
-  ];
+  bool _isLoading = true;
+  String? _error;
+  List<dynamic> _products = [];
+  bool _isLoadingOrders = true;
+  List<dynamic> _orders = [];
 
-  final _orders = [
-    {'name': 'Cotton T-Shirt Pack', 'status': 'In Production', 'color': C.yellow, 'date': 'Arriving Mar 5', 'qty': 2},
-    {'name': 'Basmati Rice 5kg', 'status': 'At Anchor Point', 'color': C.green, 'date': 'Ready to collect', 'qty': 1},
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _fetchProducts();
+    _fetchOrders();
+  }
+
+  Future<void> _fetchOrders() async {
+    try {
+      final res = await api.getOrders();
+      if (res['success'] == true && mounted) {
+        setState(() {
+          _orders = res['orders'];
+          _isLoadingOrders = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoadingOrders = false);
+    }
+  }
+
+  Future<void> _fetchProducts() async {
+    setState(() { _isLoading = true; _error = null; });
+    try {
+      final res = await api.getProducts();
+      if (res['success'] == true) {
+        setState(() {
+          _products = res['products'];
+          _isLoading = false;
+        });
+      } else {
+        setState(() { _error = res['message'] ?? 'Failed to load products'; _isLoading = false; });
+      }
+    } catch (e) {
+      setState(() { _error = 'Network error while fetching products'; _isLoading = false; });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +111,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         SliverToBoxAdapter(child: _buildCategories()),
 
         // Active Orders
-        if (_orders.isNotEmpty) ...[
+        if (_isLoadingOrders) ...[
+          SliverToBoxAdapter(child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
+            child: SectionHeader(title: 'Active Orders', action: 'View All', onAction: () => setState(() => _tab = 1)),
+          )),
+          const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator()))),
+        ] else if (_orders.isNotEmpty) ...[
           SliverToBoxAdapter(child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 0),
             child: SectionHeader(title: 'Active Orders', action: 'View All', onAction: () => setState(() => _tab = 1)),
@@ -96,18 +133,27 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           )),
         ],
 
-        // Products
+        // Products Header
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
           child: SectionHeader(title: 'Group Orders Near You', action: 'Filter'),
         )),
-        SliverPadding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          sliver: SliverList(delegate: SliverChildBuilderDelegate(
-            (_, i) => _buildProductCard(_products[i], i),
-            childCount: _products.length,
-          )),
-        ),
+        
+        // Products List
+        if (_isLoading)
+          const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(32), child: CircularProgressIndicator())))
+        else if (_error != null)
+          SliverToBoxAdapter(child: Padding(padding: const EdgeInsets.all(32), child: Text(_error!, style: const TextStyle(color: Colors.red))))
+        else if (_products.isEmpty)
+          const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(32), child: Text('No products available nearby.')))
+        else
+          SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            sliver: SliverList(delegate: SliverChildBuilderDelegate(
+              (_, i) => _buildProductCard(_products[i], i),
+              childCount: _products.length,
+            )),
+          ),
         const SliverToBoxAdapter(child: SizedBox(height: 20)),
       ],
     );
@@ -188,7 +234,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     );
   }
 
-  Widget _buildActiveOrder(Map<String, dynamic> o) {
+  Widget _buildActiveOrder(dynamic o) {
+    final status = (o['status'] as String?) ?? 'pending';
+    final color = status == 'collected' ? C.green : (status == 'ready' ? C.yellow : C.blue);
+    final name = (o['product'] != null ? o['product']['name'] : 'Unknown Product') as String;
+    final qty = o['qty'] ?? 1;
+    final date = o['created_at'] != null ? o['created_at'].toString().substring(0, 10) : '';
+
     return Container(
       width: 240,
       margin: const EdgeInsets.only(right: 12),
@@ -202,19 +254,30 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(children: [
-            Expanded(child: Text(o['name'] as String, style: S.h4.copyWith(fontSize: 13), maxLines: 1, overflow: TextOverflow.ellipsis)),
-            StatusChip(label: o['status'] as String, color: o['color'] as Color),
+            Expanded(child: Text(name, style: S.h4.copyWith(fontSize: 13), maxLines: 1, overflow: TextOverflow.ellipsis)),
+            StatusChip(label: status.toUpperCase(), color: color),
           ]),
           const SizedBox(height: 8),
-          Text(o['date'] as String, style: S.caption),
-          Text('Qty: ${o['qty']}', style: S.bodySmall),
+          Text(date, style: S.caption),
+          Text('Qty: $qty', style: S.bodySmall),
         ],
       ),
     );
   }
 
   Widget _buildProductCard(Map<String, dynamic> p, int i) {
-    final progress = (p['orders'] as int) / (p['min'] as int);
+    Map<String, dynamic>? pool = p['pool'];
+    int currentQty = pool?['current_qty'] ?? 0;
+    int minQty = pool?['min_qty'] ?? 10;
+    double progress = currentQty / minQty;
+    if (progress > 1) progress = 1;
+
+    String price = p['price']?.toString() ?? p['tier1_price']?.toString() ?? '0';
+    String retail = p['retail']?.toString() ?? p['mrp']?.toString() ?? '0';
+    String save = p['savings_percent']?.toString() ?? '0';
+    String factory = p['factory'] != null ? p['factory']['name'] : 'Unknown Factory';
+    String score = p['factory'] != null ? p['factory']['trust_score']?.toString() ?? '0' : '0.0';
+
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProductDetailScreen(product: p))),
       child: AppCard(
@@ -223,73 +286,72 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
           children: [
             Row(
               children: [
-                // Product image placeholder
                 Container(
                   width: 72, height: 72,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(14), color: C.surfaceAlt,
                     border: Border.all(color: C.border),
                   ),
-                  child: Icon(p['icon'] as IconData, color: C.textTer, size: 30),
+                  child: const Icon(Icons.shopping_bag_rounded, color: C.textTer, size: 30),
                 ),
                 const SizedBox(width: 14),
                 Expanded(child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(p['name'] as String, style: S.h4.copyWith(fontSize: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    Text(p['name'] ?? '', style: S.h4.copyWith(fontSize: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
                     const SizedBox(height: 2),
                     Row(children: [
                       Icon(Icons.factory_rounded, size: 12, color: C.textTer),
                       const SizedBox(width: 4),
-                      Text(p['factory'] as String, style: S.caption),
+                      Text(factory, style: S.caption.copyWith(overflow: TextOverflow.ellipsis)),
                       const SizedBox(width: 6),
                       Icon(Icons.star_rounded, size: 12, color: C.yellow),
-                      Text(' ${p['score']}', style: S.caption.copyWith(fontWeight: FontWeight.w600)),
+                      Text(' $score', style: S.caption.copyWith(fontWeight: FontWeight.w600)),
                     ]),
                     const SizedBox(height: 8),
                     Row(children: [
-                      Text('₹${p['price']}', style: S.price.copyWith(fontSize: 18)),
+                      Text('₹$price', style: S.price.copyWith(fontSize: 18)),
                       const SizedBox(width: 8),
-                      Text('₹${p['retail']}', style: S.priceCut),
+                      Text('₹$retail', style: S.priceCut),
                       const SizedBox(width: 8),
-                      StatusChip(label: '${p['save']}% OFF', color: C.green),
+                      StatusChip(label: '$save% OFF', color: C.green),
                     ]),
                   ],
                 )),
               ],
             ),
             const SizedBox(height: 12),
-            // Zone progress + Timer
-            Row(
-              children: [
-                Expanded(child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(4),
-                      child: LinearProgressIndicator(
-                        value: progress,
-                        backgroundColor: C.border,
-                        valueColor: AlwaysStoppedAnimation(progress > 0.8 ? C.green : C.blue),
-                        minHeight: 5,
+            if (pool != null)
+              Row(
+                children: [
+                  Expanded(child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          backgroundColor: C.border,
+                          valueColor: AlwaysStoppedAnimation(progress > 0.8 ? C.green : C.blue),
+                          minHeight: 5,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text('${p['orders']} of ${p['min']} orders', style: S.caption),
-                  ],
-                )),
-                const SizedBox(width: 16),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: C.yellowLight),
-                  child: Row(children: [
-                    const Icon(Icons.timer_rounded, size: 14, color: C.yellow),
-                    const SizedBox(width: 4),
-                    Text(p['time'] as String, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: C.yellow)),
-                  ]),
-                ),
-              ],
-            ),
+                      const SizedBox(height: 4),
+                      Text('$currentQty of $minQty orders', style: S.caption),
+                    ],
+                  )),
+                  const SizedBox(width: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: C.yellowLight),
+                    child: Row(children: [
+                      const Icon(Icons.timer_rounded, size: 14, color: C.yellow),
+                      const SizedBox(width: 4),
+                      Text('Ending soon', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: C.yellow)),
+                    ]),
+                  ),
+                ],
+              ),
           ],
         ),
       ),
@@ -301,35 +363,46 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     return Scaffold(
       backgroundColor: C.bg,
       appBar: AppBar(title: const Text('My Orders'), backgroundColor: C.bg, elevation: 0, scrolledUnderElevation: 0.5),
-      body: ListView(
-        padding: const EdgeInsets.all(20),
-        children: [
-          ..._orders.map((o) => GestureDetector(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => OrderTrackingScreen(order: o))),
-            child: AppCard(child: Row(children: [
-              Container(
-                width: 44, height: 44,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: (o['color'] as Color).withValues(alpha: 0.1)),
-                child: Icon(Icons.inventory_2_rounded, color: o['color'] as Color, size: 22),
-              ),
-              const SizedBox(width: 14),
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(o['name'] as String, style: S.h4.copyWith(fontSize: 14)),
-                  Text(o['date'] as String, style: S.caption),
-                ],
-              )),
-              StatusChip(label: o['status'] as String, color: o['color'] as Color),
-            ])),
-          )),
-          const SizedBox(height: 16),
-          const SectionHeader(title: 'Past Orders'),
-          _pastOrder('Natural Soap Pack', 'Delivered · Feb 22', 5),
-          _pastOrder('Wheat Flour 10kg', 'Delivered · Feb 18', 4),
-          _pastOrder('Cotton Kurta Set', 'Delivered · Feb 10', 5),
-        ],
-      ),
+      body: _isLoadingOrders 
+        ? const Center(child: CircularProgressIndicator()) 
+        : ListView(
+            padding: const EdgeInsets.all(20),
+            children: [
+              ..._orders.map((o) {
+                final status = (o['status'] as String?) ?? 'pending';
+                final color = status == 'collected' ? C.green : (status == 'ready' ? C.yellow : C.blue);
+                final name = (o['product'] != null ? o['product']['name'] : 'Unknown Product') as String;
+                final date = o['created_at'] != null ? o['created_at'].toString().substring(0, 10) : '';
+
+                return GestureDetector(
+                  onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => OrderTrackingScreen(order: o))),
+                  child: AppCard(child: Row(children: [
+                    Container(
+                      width: 44, height: 44,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: color.withValues(alpha: 0.1)),
+                      child: Icon(Icons.inventory_2_rounded, color: color, size: 22),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(name, style: S.h4.copyWith(fontSize: 14)),
+                        Text(date, style: S.caption),
+                      ],
+                    )),
+                    StatusChip(label: status.toUpperCase(), color: color),
+                  ])),
+                );
+              }),
+              if (_orders.isEmpty)
+                const Padding(padding: EdgeInsets.all(20), child: Text('No active orders')),
+              const SizedBox(height: 16),
+              const SectionHeader(title: 'Past Orders'),
+              _pastOrder('Natural Soap Pack', 'Delivered · Feb 22', 5),
+              _pastOrder('Wheat Flour 10kg', 'Delivered · Feb 18', 4),
+              _pastOrder('Cotton Kurta Set', 'Delivered · Feb 10', 5),
+            ],
+          ),
     );
   }
 

@@ -6,6 +6,7 @@ import 'notifications_screen.dart';
 import 'production_tracker_screen.dart';
 import 'dispatch_screen.dart';
 import 'collection_screen.dart';
+import '../services/api_service.dart';
 
 class FactoryDashboardScreen extends StatefulWidget {
   const FactoryDashboardScreen({super.key});
@@ -14,16 +15,36 @@ class FactoryDashboardScreen extends StatefulWidget {
 }
 
 class _FactoryDashboardScreenState extends State<FactoryDashboardScreen> {
-  int _tab = 0;
-
-  final _orders = [
-    {'id': 'FL-0342', 'product': 'Cotton T-Shirt Pack', 'qty': 50, 'status': 'New', 'color': C.blue, 'amount': 9950, 'zone': 'Zone A', 'date': 'Today'},
-    {'id': 'FL-0341', 'product': 'Basmati Rice 5kg', 'qty': 30, 'status': 'In Production', 'color': C.yellow, 'amount': 8550, 'zone': 'Zone B', 'date': 'Yesterday'},
-    {'id': 'FL-0340', 'product': 'Natural Soap Pack', 'qty': 25, 'status': 'Ready', 'color': C.green, 'amount': 3000, 'zone': 'Zone A', 'date': '2 days ago'},
-    {'id': 'FL-0339', 'product': 'Handloom Bedsheet', 'qty': 15, 'status': 'Dispatched', 'color': C.orange, 'amount': 6750, 'zone': 'Zone C', 'date': '3 days ago'},
-  ];
+  bool _isLoading = true;
+  List<dynamic> _orders = [];
+  double _todayEarnings = 0.0;
+  int _pendingAction = 0;
 
   @override
+  void initState() {
+    super.initState();
+    _fetchDashboard();
+  }
+
+  Future<void> _fetchDashboard() async {
+    try {
+      final res = await api.getFactoryPendingOrders();
+      if (res['success'] == true && mounted) {
+        setState(() {
+          _orders = res['orders'];
+          _isLoading = false;
+          // Simple calculations
+          for (var o in _orders) {
+            final t = o['total_amount']?.toString() ?? '0';
+            _todayEarnings += double.tryParse(t) ?? 0;
+            if (o['status'] == 'pending') _pendingAction++;
+          }
+        });
+      }
+    } catch (e) {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: C.bg,
@@ -81,19 +102,24 @@ class _FactoryDashboardScreenState extends State<FactoryDashboardScreen> {
           ),
           const SizedBox(height: 16),
 
-          // Stats row
+          // Settings row
           Row(children: [
-            _statCard('New Orders', '2', C.blue, Icons.fiber_new_rounded),
+            _statCard('New Orders', '${_orders.where((o) => o['status'] == 'pending').length}', C.blue, Icons.fiber_new_rounded),
             const SizedBox(width: 10),
-            _statCard('Production', '3', C.yellow, Icons.precision_manufacturing_rounded),
+            _statCard('Production', '${_orders.where((o) => o['status'] == 'accepted').length}', C.yellow, Icons.precision_manufacturing_rounded),
             const SizedBox(width: 10),
-            _statCard('Ready', '1', C.green, Icons.check_circle_rounded),
+            _statCard('Ready', '${_orders.where((o) => o['status'] == 'ready').length}', C.green, Icons.check_circle_rounded),
           ]),
           const SizedBox(height: 20),
 
           // Recent Orders
           SectionHeader(title: 'Recent Orders', action: 'View All', onAction: () => setState(() => _tab = 1)),
-          ..._orders.take(3).map((o) => _orderCard(o)),
+          if (_isLoading)
+            const Center(child: Padding(padding: EdgeInsets.all(20), child: CircularProgressIndicator()))
+          else if (_orders.isEmpty)
+            const Padding(padding: EdgeInsets.all(20), child: Text('No recent orders'))
+          else
+            ..._orders.take(3).map((o) => _orderCard(o)),
 
           const SizedBox(height: 12),
 
@@ -127,28 +153,35 @@ class _FactoryDashboardScreenState extends State<FactoryDashboardScreen> {
     ));
   }
 
-  Widget _orderCard(Map<String, dynamic> o) {
+  Widget _orderCard(dynamic o) {
+    final status = (o['status'] as String?) ?? 'pending';
+    final color = status == 'collected' ? C.green : (status == 'ready' ? C.orange : C.blue);
+    final name = o['product'] != null ? o['product']['name'] : 'Unknown Product';
+    final qty = o['qty'] ?? 1;
+    final total = o['total_amount'] ?? '0';
+    final id = o['id']?.toString().substring(0, 8) ?? 'Unknown';
+
     return GestureDetector(
       onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => FactoryOrderDetailScreen(order: o))),
       child: AppCard(child: Row(children: [
         Container(
           width: 48, height: 48,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: (o['color'] as Color).withValues(alpha: 0.1)),
-          child: Icon(Icons.inventory_2_rounded, color: o['color'] as Color, size: 22),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12), color: color.withValues(alpha: 0.1)),
+          child: Icon(Icons.inventory_2_rounded, color: color, size: 22),
         ),
         const SizedBox(width: 14),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(o['product'] as String, style: S.h4.copyWith(fontSize: 14)),
+          Text(name, style: S.h4.copyWith(fontSize: 14), maxLines: 1),
           Row(children: [
-            Text('#${o['id']} · ${o['zone']}', style: S.caption),
+            Text('#$id', style: S.caption),
             const SizedBox(width: 8),
-            Text('Qty: ${o['qty']}', style: S.caption.copyWith(fontWeight: FontWeight.w600)),
+            Text('Qty: $qty', style: S.caption.copyWith(fontWeight: FontWeight.w600)),
           ]),
         ])),
         Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          StatusChip(label: o['status'] as String, color: o['color'] as Color),
+          StatusChip(label: status.toUpperCase(), color: color),
           const SizedBox(height: 4),
-          Text('₹${o['amount']}', style: S.body.copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
+          Text('₹$total', style: S.body.copyWith(fontWeight: FontWeight.w700, fontSize: 14)),
         ]),
       ])),
     );
@@ -185,18 +218,24 @@ class _FactoryDashboardScreenState extends State<FactoryDashboardScreen> {
             labelStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
             tabs: const [Tab(text: 'All'), Tab(text: 'New'), Tab(text: 'Active'), Tab(text: 'Done')],
           ),
-          Expanded(child: TabBarView(children: [
-            _orderList(_orders),
-            _orderList(_orders.where((o) => o['status'] == 'New').toList()),
-            _orderList(_orders.where((o) => o['status'] == 'In Production' || o['status'] == 'Ready').toList()),
-            _orderList(_orders.where((o) => o['status'] == 'Dispatched').toList()),
-          ])),
+          Expanded(child: _isLoading 
+            ? const Center(child: CircularProgressIndicator())
+            : TabBarView(children: [
+                _orderList(_orders),
+                _orderList(_orders.where((o) => o['status'] == 'pending').toList()),
+                _orderList(_orders.where((o) => o['status'] == 'accepted' || o['status'] == 'ready').toList()),
+                _orderList(_orders.where((o) => o['status'] == 'collected').toList()),
+              ]),
+          ),
         ]),
       ),
     );
   }
 
-  Widget _orderList(List<Map<String, dynamic>> orders) {
+  Widget _orderList(List<dynamic> orders) {
+    if (orders.isEmpty) {
+      return const Center(child: Text('No orders found'));
+    }
     return ListView(
       padding: const EdgeInsets.all(20),
       children: orders.map((o) => _orderCard(o)).toList(),

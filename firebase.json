@@ -1,0 +1,12 @@
+{
+  "auth": {
+    "providers": {
+      "anonymous": true,
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "FactoryLink",
+        "supportEmail": "abhayvishwakarma0814@gmail.com"
+      }
+    }
+  }
+}

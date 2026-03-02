@@ -1,0 +1,29 @@
+{
+    "project_info": {
+        "project_number": "6608963237",
+        "project_id": "factorylink-b2f",
+        "storage_bucket": "factorylink-b2f.firebasestorage.app"
+    },
+    "client": [
+        {
+            "client_info": {
+                "mobilesdk_app_id": "1:6608963237:android:d0d09454793bff95fdef4c",
+                "android_client_info": {
+                    "package_name": "com.factorylink.b2f"
+                }
+            },
+            "oauth_client": [],
+            "api_key": [
+                {
+                    "current_key": "AIzaSyBlBx3t_bQ0p8ZNg0e-0LvZqFZlGFTE8V8"
+                }
+            ],
+            "services": {
+                "appinvite_service": {
+                    "other_platform_oauth_client": []
+                }
+            }
+        }
+    ],
+    "configuration_version": "1"
+}

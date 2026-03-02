@@ -7,10 +7,12 @@ import 'screens/customer_registration_screen.dart';
 import 'screens/customer_home_screen.dart';
 import 'screens/factory_registration_screen.dart';
 import 'screens/factory_dashboard_screen.dart';
+import 'services/api_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await api.loadTokens(); // Load saved JWT tokens
   runApp(const FactoryLinkApp());
 }
 
@@ -297,16 +299,28 @@ class _FullOtpScreenState extends State<FullOtpScreen> {
   final _phoneCtrl = TextEditingController();
   bool _phoneDone = false;
   bool _otpSent = false;
+  bool _loading = false;
+  String? _error;
   final _otpCtrls = List.generate(6, (_) => TextEditingController());
   final _otpFocus = List.generate(6, (_) => FocusNode());
   int _timer = 0;
 
   Color get _accent => widget.userType == 'customer' ? C.blue : C.orange;
 
-  void _sendOtp() {
-    setState(() { _otpSent = true; _timer = 30; });
-    _otpFocus[0].requestFocus();
-    _tick();
+  Future<void> _sendOtp() async {
+    setState(() { _loading = true; _error = null; });
+    try {
+      final result = await api.sendOtp(_phoneCtrl.text);
+      if (result['success'] == true) {
+        setState(() { _otpSent = true; _timer = 30; _loading = false; });
+        _otpFocus[0].requestFocus();
+        _tick();
+      } else {
+        setState(() { _error = result['message'] ?? 'Failed to send OTP'; _loading = false; });
+      }
+    } catch (e) {
+      setState(() { _error = 'Network error. Is the server running?'; _loading = false; });
+    }
   }
 
   void _tick() {
@@ -316,15 +330,39 @@ class _FullOtpScreenState extends State<FullOtpScreen> {
     });
   }
 
-  void _onOtp(int i, String v) {
+  Future<void> _onOtp(int i, String v) async {
     if (v.isNotEmpty && i < 5) _otpFocus[i + 1].requestFocus();
     if (v.isEmpty && i > 0) _otpFocus[i - 1].requestFocus();
     if (_otpCtrls.every((c) => c.text.isNotEmpty)) {
-      Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (_) => widget.userType == 'customer'
-            ? const CustomerRegistrationScreen()
-            : const FactoryRegistrationScreen(),
-      ));
+      setState(() { _loading = true; _error = null; });
+      try {
+        final otp = _otpCtrls.map((c) => c.text).join();
+        final result = await api.verifyOtp(_phoneCtrl.text, otp, widget.userType);
+        if (result['success'] == true) {
+          final user = result['user'];
+          final isNew = user['is_new'] == true;
+          if (!mounted) return;
+          Navigator.pushReplacement(context, MaterialPageRoute(
+            builder: (_) {
+              if (isNew) {
+                return widget.userType == 'customer'
+                    ? const CustomerRegistrationScreen()
+                    : const FactoryRegistrationScreen();
+              } else {
+                return widget.userType == 'customer'
+                    ? const CustomerHomeScreen()
+                    : const FactoryDashboardScreen();
+              }
+            },
+          ));
+        } else {
+          setState(() { _error = result['message'] ?? 'Invalid OTP'; _loading = false; });
+          for (var c in _otpCtrls) c.clear();
+          _otpFocus[0].requestFocus();
+        }
+      } catch (e) {
+        setState(() { _error = 'Verification failed. Please try again.'; _loading = false; });
+      }
     }
   }
 
@@ -375,8 +413,14 @@ class _FullOtpScreenState extends State<FullOtpScreen> {
                   onChanged: (v) => setState(() => _phoneDone = v.length == 10))),
                 if (_phoneDone) const Icon(Icons.check_circle_rounded, color: C.green, size: 22),
               ])),
+            if (_error != null) Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(_error!, style: const TextStyle(color: Colors.red, fontSize: 13)),
+            ),
             const SizedBox(height: 24),
-            AppBtn(text: 'Send OTP', onTap: _phoneDone ? _sendOtp : () {}, color: _phoneDone ? _accent : C.textTer),
+            _loading
+              ? const Center(child: CircularProgressIndicator())
+              : AppBtn(text: 'Send OTP', onTap: _phoneDone ? _sendOtp : () {}, color: _phoneDone ? _accent : C.textTer),
           ] else ...[
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: List.generate(6, (i) => SizedBox(width: 48, height: 56,

@@ -270,6 +270,57 @@ CREATE TABLE IF NOT EXISTS otps (
 );
 CREATE INDEX IF NOT EXISTS idx_otps_phone ON otps(phone);
 
+-- ─── POOL ASSIGNMENTS TABLE ─────────────────────
+-- Tracks which factories were assigned/declined per pool (Dual Factory Routing)
+CREATE TABLE IF NOT EXISTS pool_assignments (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  pool_id UUID NOT NULL REFERENCES pools(id),
+  factory_id UUID NOT NULL REFERENCES factories(id),
+  match_score DECIMAL(5,1),
+  is_primary BOOLEAN DEFAULT false,
+  status VARCHAR(20) DEFAULT 'assigned' CHECK (status IN ('assigned', 'accepted', 'declined', 'timeout')),
+  assigned_at TIMESTAMPTZ DEFAULT NOW(),
+  responded_at TIMESTAMPTZ,
+  UNIQUE(pool_id, factory_id)
+);
+CREATE INDEX IF NOT EXISTS idx_pool_assign_pool ON pool_assignments(pool_id);
+CREATE INDEX IF NOT EXISTS idx_pool_assign_factory ON pool_assignments(factory_id);
+CREATE INDEX IF NOT EXISTS idx_pool_assign_status ON pool_assignments(status);
+
+-- ─── WALLETS TABLE ──────────────────────────────
+-- TRD: Customer wallet for subscription prepay and refunds
+CREATE TABLE IF NOT EXISTS wallets (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) UNIQUE,
+  balance DECIMAL(10,2) DEFAULT 0.00,
+  total_credited DECIMAL(10,2) DEFAULT 0.00,
+  total_debited DECIMAL(10,2) DEFAULT 0.00,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_wallets_user ON wallets(user_id);
+
+-- ─── WALLET TRANSACTIONS TABLE ──────────────────
+-- Tracks all wallet credits and debits
+CREATE TABLE IF NOT EXISTS wallet_transactions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  wallet_id UUID NOT NULL REFERENCES wallets(id),
+  user_id UUID NOT NULL REFERENCES users(id),
+  amount DECIMAL(10,2) NOT NULL,
+  type VARCHAR(20) NOT NULL CHECK (type IN ('credit', 'debit')),
+  source VARCHAR(30) NOT NULL CHECK (source IN (
+    'refund', 'topup', 'subscription_prepay', 'order_payment',
+    'cashback', 'referral_bonus', 'admin_adjustment'
+  )),
+  reference_id UUID,
+  description TEXT,
+  balance_after DECIMAL(10,2) NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_wallet_tx_wallet ON wallet_transactions(wallet_id);
+CREATE INDEX IF NOT EXISTS idx_wallet_tx_user ON wallet_transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_wallet_tx_type ON wallet_transactions(type);
+
 -- ─── Updated_at trigger function ─────────────────
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -284,7 +335,7 @@ DO $$
 DECLARE
   t TEXT;
 BEGIN
-  FOR t IN SELECT unnest(ARRAY['users', 'factories', 'products', 'zones', 'pools', 'orders', 'subscriptions'])
+  FOR t IN SELECT unnest(ARRAY['users', 'factories', 'products', 'zones', 'pools', 'orders', 'subscriptions', 'wallets'])
   LOOP
     EXECUTE format('
       DROP TRIGGER IF EXISTS update_%s_updated_at ON %s;
@@ -299,20 +350,21 @@ SELECT 'Migration completed successfully!' AS result;
 `;
 
 async function migrate() {
-    console.log('🔄 Running FactoryLink database migration...\n');
-    try {
-        await connectDB();
-        const pool = getPool();
-        await pool.query(MIGRATION_SQL);
-        console.log('✅ All tables created successfully!');
-        console.log('   Tables: users, factories, products, zones, anchor_points,');
-        console.log('           pools, orders, payments, ratings, subscriptions,');
-        console.log('           notifications, otps');
-        process.exit(0);
-    } catch (err) {
-        console.error('❌ Migration failed:', err.message);
-        process.exit(1);
-    }
+  console.log('🔄 Running FactoryLink database migration...\n');
+  try {
+    await connectDB();
+    const pool = getPool();
+    await pool.query(MIGRATION_SQL);
+    console.log('✅ All tables created successfully!');
+    console.log('   Tables: users, factories, products, zones, anchor_points,');
+    console.log('           pools, orders, payments, ratings, subscriptions,');
+    console.log('           notifications, otps, pool_assignments,');
+    console.log('           wallets, wallet_transactions');
+    process.exit(0);
+  } catch (err) {
+    console.error('❌ Migration failed:', err.message);
+    process.exit(1);
+  }
 }
 
 migrate();

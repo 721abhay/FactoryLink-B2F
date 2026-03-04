@@ -146,4 +146,69 @@ router.get('/analytics', authenticate('admin'), async (req, res, next) => {
     } catch (err) { next(err); }
 });
 
+// ═══════════════════════════════════════════════════
+// POOL ENGINE ADMIN ENDPOINTS — Operations monitoring
+// ═══════════════════════════════════════════════════
+const {
+    processExpiredPools,
+    processLockedPools,
+    processFactoryTimeouts,
+    updateZoneHealth,
+    getPoolStats,
+} = require('../services/poolEngine');
+
+// ─── GET /admin/pools/stats — Pool engine statistics ────
+router.get('/pools/stats', authenticate('admin'), async (req, res, next) => {
+    try {
+        const stats = await getPoolStats();
+
+        // Get counts of pending refunds
+        const refunds = await query(
+            `SELECT COUNT(*) AS cnt, COALESCE(SUM(amount), 0) AS total
+             FROM payments WHERE type = 'refund' AND status = 'pending'`
+        );
+
+        res.json({
+            success: true,
+            pool_stats: stats,
+            pending_refunds: {
+                count: parseInt(refunds.rows[0].cnt),
+                total_amount: parseFloat(refunds.rows[0].total),
+            },
+        });
+    } catch (err) { next(err); }
+});
+
+// ─── POST /admin/pools/process-expired — Manually trigger expired pool processing ────
+router.post('/pools/process-expired', authenticate('admin'), async (req, res, next) => {
+    try {
+        const result = await processExpiredPools();
+        res.json({ success: true, ...result });
+    } catch (err) { next(err); }
+});
+
+// ─── POST /admin/pools/assign-factories — Manually trigger factory assignment ────
+router.post('/pools/assign-factories', authenticate('admin'), async (req, res, next) => {
+    try {
+        const result = await processLockedPools();
+        res.json({ success: true, ...result });
+    } catch (err) { next(err); }
+});
+
+// ─── POST /admin/pools/check-timeouts — Manually trigger timeout check ────
+router.post('/pools/check-timeouts', authenticate('admin'), async (req, res, next) => {
+    try {
+        const result = await processFactoryTimeouts();
+        res.json({ success: true, ...result });
+    } catch (err) { next(err); }
+});
+
+// ─── POST /admin/zones/refresh-health — Manually trigger zone health update ────
+router.post('/zones/refresh-health', authenticate('admin'), async (req, res, next) => {
+    try {
+        const result = await updateZoneHealth();
+        res.json({ success: true, ...result });
+    } catch (err) { next(err); }
+});
+
 module.exports = router;

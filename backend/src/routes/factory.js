@@ -185,18 +185,52 @@ router.put('/orders/:id/accept', authenticate('factory'), async (req, res, next)
 });
 
 // ─── PUT /factory/orders/:id/decline ─────────────
-// TRD: Factory declines — triggers cascade to next factory
+// TRD: Factory declines — triggers cascade to next factory via Matching Service
 router.put('/orders/:id/decline', authenticate('factory'), async (req, res, next) => {
     try {
-        await query(
-            `UPDATE orders SET status = 'pending' WHERE id = $1`,
-            [req.params.id]
+        const { reason } = req.body;
+
+        // Get the order and its pool
+        const orderResult = await query(
+            `SELECT o.*, p.factory_id, po.id AS pool_id FROM orders o
+             JOIN products p ON o.product_id = p.id
+             LEFT JOIN pools po ON o.pool_id = po.id
+             JOIN factories f ON p.factory_id = f.id
+             WHERE o.id = $1 AND f.owner_id = $2 AND o.status = 'assigned'`,
+            [req.params.id, req.user.userId]
         );
 
-        // TODO: Cascade to next factory in matching service
-        // This would use Bull Queue for async job processing
+        if (orderResult.rows.length === 0) {
+            return res.status(404).json({ error: 'Not Found', message: 'Order not found or not assignable.' });
+        }
 
-        res.json({ success: true, rerouted: true, message: 'Order will be reassigned to another factory.' });
+        const order = orderResult.rows[0];
+
+        // Get factory ID
+        const factoryResult = await query(
+            'SELECT id FROM factories WHERE owner_id = $1', [req.user.userId]
+        );
+        const factoryId = factoryResult.rows[0]?.id;
+
+        if (order.pool_id && factoryId) {
+            // Use Matching Service for cascade routing
+            const { handleFactoryDecline } = require('../services/matchingService');
+            const result = await handleFactoryDecline(order.pool_id, factoryId);
+
+            res.json({
+                success: true,
+                rerouted: result.rerouted,
+                new_factory: result.new_factory,
+                message: result.message,
+            });
+        } else {
+            // Single order (no pool) — just cancel
+            await query(
+                `UPDATE orders SET status = 'cancelled', updated_at = NOW() WHERE id = $1`,
+                [req.params.id]
+            );
+            res.json({ success: true, rerouted: false, message: 'Order cancelled — no pool for rerouting.' });
+        }
     } catch (err) { next(err); }
 });
 

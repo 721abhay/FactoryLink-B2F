@@ -164,7 +164,28 @@ router.post('/refresh', async (req, res, next) => {
 router.post('/logout', authenticate(), async (req, res, next) => {
     try {
         await deleteSession(req.user.userId);
+        // Clear FCM token on logout
+        await query('UPDATE users SET fcm_token = NULL WHERE id = $1', [req.user.userId]);
         res.json({ success: true, message: 'Logged out successfully.' });
+    } catch (err) { next(err); }
+});
+
+// ─── POST /auth/fcm-token — Register device for push notifications ─────
+// TRD Section 6: FCM push notification registration
+router.post('/fcm-token', authenticate(), async (req, res, next) => {
+    try {
+        const { fcm_token, device_info } = req.body;
+
+        if (!fcm_token) {
+            return res.status(400).json({ error: 'Missing token', message: 'FCM token is required.' });
+        }
+
+        await query(
+            `UPDATE users SET fcm_token = $1 WHERE id = $2`,
+            [fcm_token, req.user.userId]
+        );
+
+        res.json({ success: true, message: 'FCM token registered.' });
     } catch (err) { next(err); }
 });
 

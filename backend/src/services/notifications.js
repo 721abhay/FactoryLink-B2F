@@ -58,6 +58,29 @@ const notifications = {
 
     trustScoreUpdated: (userId, newScore) =>
         createNotification(userId, '⭐ Trust Score Updated', `Your trust score is now ${newScore}/10.`, 'trust'),
+
+    // Pool lifecycle notifications
+    poolExpired: (userId, productName) =>
+        createNotification(userId, '⏰ Group Order Expired', `The group order for ${productName} didn't reach the minimum quantity. Any advance paid will be refunded.`, 'order'),
+
+    poolAssigned: (userId, factoryName, productName) =>
+        createNotification(userId, '🏭 Factory Assigned!', `${factoryName} has been assigned to produce your order for ${productName}. Production begins soon!`, 'order'),
+
+    refundInitiated: (userId, amount) =>
+        createNotification(userId, '💸 Refund Processing', `Your refund of ₹${amount} is being processed. It will reach your account within 2 hours.`, 'payment'),
+
+    factoryTimeout: (userId, productName) =>
+        createNotification(userId, '🔄 Finding Better Factory', `The original factory didn't respond in time for ${productName}. We're assigning a new factory now.`, 'order'),
+
+    orderAutoCompleted: (userId, productName) =>
+        createNotification(userId, '✅ Order Completed', `Your order for ${productName} has been auto-completed. Thank you for shopping with FactoryLink!`, 'order'),
+
+    // Factory-specific pool notifications
+    newBulkOrder: (userId, productName, qty) =>
+        createNotification(userId, '📦 New Bulk Order!', `Bulk order: ${qty}x ${productName}. Accept within 2 hours to begin production.`, 'factory_order'),
+
+    factoryPenalty: (userId, reason) =>
+        createNotification(userId, '⚠️ Trust Score Penalty', `Your trust score has been reduced: ${reason}. Respond to orders faster to improve.`, 'warning'),
 };
 
 module.exports = { createNotification, notifications };

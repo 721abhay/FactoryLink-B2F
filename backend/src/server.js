@@ -17,6 +17,8 @@ const { Server: SocketServer } = require('socket.io');
 const { connectDB } = require('./database/connection');
 const { connectRedis } = require('./cache/redis');
 const { initFirebase } = require('./services/firebase');
+const { startCronJobs, stopCronJobs } = require('./services/cronJobs');
+const { initRazorpay } = require('./services/paymentGateway');
 
 // Route imports
 const authRoutes = require('./routes/auth');
@@ -27,6 +29,9 @@ const zoneRoutes = require('./routes/zones');
 const subscriptionRoutes = require('./routes/subscriptions');
 const adminRoutes = require('./routes/admin');
 const uploadRoutes = require('./routes/uploads');
+const notificationRoutes = require('./routes/notifications');
+const walletRoutes = require('./routes/wallet');
+const paymentRoutes = require('./routes/payments');
 
 // Middleware imports
 const { errorHandler } = require('./middleware/errorHandler');
@@ -60,6 +65,9 @@ app.use('/v1/zones', zoneRoutes);
 app.use('/v1/subscriptions', subscriptionRoutes);
 app.use('/v1/admin', adminRoutes);
 app.use('/v1/uploads', uploadRoutes);
+app.use('/v1/notifications', notificationRoutes);
+app.use('/v1/wallet', walletRoutes);
+app.use('/v1/payments', paymentRoutes);
 
 // ─── 404 HANDLER ─────────────────────────────────────
 app.use((req, res) => {
@@ -107,12 +115,19 @@ async function startServer() {
     initFirebase();
     console.log('✅ Firebase initialized');
 
+    // Initialize Razorpay
+    initRazorpay();
+    console.log('✅ Razorpay initialized');
+
     // Start server
     server.listen(PORT, () => {
       console.log(`\n🚀 FactoryLink API running on port ${PORT}`);
       console.log(`📍 Base URL: http://localhost:${PORT}/v1`);
       console.log(`🔌 WebSocket ready on port ${PORT}`);
       console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}\n`);
+
+      // Start background cron jobs (pool engine)
+      startCronJobs();
     });
   } catch (err) {
     console.error('❌ Failed to start server:', err.message);
@@ -121,5 +136,21 @@ async function startServer() {
 }
 
 startServer();
+
+// ─── GRACEFUL SHUTDOWN ──────────────────────────────
+process.on('SIGTERM', () => {
+  console.log('\n🛑 SIGTERM received. Shutting down gracefully...');
+  stopCronJobs();
+  server.close(() => {
+    console.log('✅ Server closed.');
+    process.exit(0);
+  });
+});
+
+process.on('SIGINT', () => {
+  console.log('\n🛑 SIGINT received. Shutting down...');
+  stopCronJobs();
+  server.close(() => process.exit(0));
+});
 
 module.exports = { app, io };
